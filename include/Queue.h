@@ -15,14 +15,17 @@ private:
     class Node
     {
     public:
-        T item = T();
+        T item;
         Node *next = nullptr;
 
         // Constructor
         Node(T item) { this->item = item; }
 
         // Destructor
-        ~Node() { this->next = nullptr; }
+        ~Node()
+        {
+            this->next = nullptr;
+        }
     };
 
     Node *head; // The head of the queue
@@ -55,6 +58,78 @@ public:
             delete node;
         }
     }
+
+    // Copy Constructor
+    Queue(const Queue &q)
+    {
+        this->count = 0;
+
+        this->head = nullptr;
+        this->tail = nullptr;
+
+        this->maxMemory = q.maxMemory;
+        this->maxItems = q.maxItems;
+
+        for (Node *node = q.head; node != nullptr; node = node->next)
+            this->push(node->item);
+    }
+
+    // Assignment operator
+    Queue &operator=(const Queue &q)
+    {
+        this->count = 0;
+
+        this->head = nullptr;
+        this->tail = nullptr;
+
+        this->maxMemory = q.maxMemory;
+        this->maxItems = q.maxItems;
+
+        for (Node *node = q.head; node != nullptr; node = node->next)
+            this->push(node->item);
+
+        return *this;
+    }
+
+    Queue queue_copy()
+    {
+        Queue queue(this->maxItems, this->maxMemory);
+
+        for (Node *node = this->head; node != nullptr; node = node->next)
+            queue.push(node->item);
+
+        return queue;
+    }
+
+    // Queue(const Queue &queue)
+    // {
+    //     this->count = queue.count;
+
+    //     this->head = nullptr;
+    //     this->tail = nullptr;
+
+    //     this->maxMemory = queue.maxMemory;
+    //     this->maxItems = queue.maxItems;
+
+    //     for (Node *node = queue.head; node != nullptr; node = node->next)
+    //         this->push(node->item);
+    // }
+
+    // Queue &operator=(const Queue &queue)
+    // {
+    //     this->count = queue.size();
+
+    //     this->head = nullptr;
+    //     this->tail = nullptr;
+
+    //     this->maxMemory = queue.maxMemory;
+    //     this->maxItems = queue.maxItems;
+
+    //     for (Node *node = queue.head; node != nullptr; node = node->next)
+    //         this->push(node->item);
+
+    //     return *this;
+    // };
 
     // Push an item into the queue
     bool push(T item)
@@ -189,39 +264,49 @@ public:
     // print queue
     void print()
     {
+        this->printHeader();
+        this->printItems();
+    }
+
+    // print queue header
+    void printHeader()
+    {
         Serial.print("Queue: ");
-        Serial.print(this->size());
-        Serial.print(" items * ");
+
         Serial.print(this->itemSize());
         Serial.print(" bytes / ");
+
         Serial.print(this->maxMemorySize());
         Serial.print(" max bytes = ");
+
         Serial.print(this->maxQueueSize());
-        Serial.println(" max items");
+        Serial.print(" max items ");
+
+        Serial.print("| Size ");
+        Serial.print(this->size());
 
         Serial.println();
     }
 
-    // print queue
+    // print queue items
     void printItems()
     {
 
         Node *ptr = this->head;
 
-        Serial.print("| H: ");
+        Serial.print("---\n");
+        Serial.print("H: ");
         Serial.print(ptr->item);
 
         for (uint8_t i = 1; i < this->size(); i++)
         {
             ptr = ptr->next;
-            Serial.print(" --> ");
+            Serial.print(" <-- ");
             Serial.print(ptr->item);
         }
 
-        Serial.print(" :T |");
-
-        Serial.print(" Size: ");
-        Serial.print(this->size());
+        Serial.print(" :T");
+        Serial.print("\n---");
 
         Serial.println();
     }

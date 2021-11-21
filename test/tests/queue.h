@@ -117,6 +117,18 @@ void test_queue_size()
     queue.push(11);
 
     TEST_ASSERT_EQUAL(2, queue.size());
+
+    queue.pop();
+
+    TEST_ASSERT_EQUAL(1, queue.size());
+
+    queue.pop();
+
+    TEST_ASSERT_EQUAL(0, queue.size());
+
+    queue.pop();
+
+    TEST_ASSERT_EQUAL(0, queue.size());
 }
 
 void test_queue()
