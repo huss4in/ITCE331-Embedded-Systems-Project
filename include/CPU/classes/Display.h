@@ -219,4 +219,22 @@ public:
 
           Serial.print("\n\n");
      }
+
+     // Preform the Algorithm and display the results
+     static void display(void (*algorithm)(Queue<CPU::Process>, Queue<CPU::Process> *, Queue<CPU::Process> *), Queue<CPU::Process> processes)
+     {
+          Queue<CPU::Process> gantt, table;
+
+          // Preform the scheduling algorithm
+          algorithm(processes, &gantt, &table);
+
+          // Display gantt chart
+          Display::gantt(gantt);
+
+          // Display scheduled processes
+          Display::table(table);
+
+          // Display the times
+          Display::times(table);
+     }
 };

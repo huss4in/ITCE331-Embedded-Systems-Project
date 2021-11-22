@@ -216,6 +216,11 @@ public:
     }
 
     // Round Robin Scheduling Algorithm
+    static void RR(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    {
+        RR(processes, gantt, table, 2);
+    }
+
     static void RR(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, int rr_time_slice = 2)
     {
         int clock = 0;
@@ -269,6 +274,11 @@ public:
     }
 
     // Priority Preemptive Scheduling Algorithm
+    static void P_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    {
+        P_P(processes, gantt, table, false);
+    }
+
     static void P_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, bool high = false)
     {
         int clock = 0;
@@ -366,6 +376,11 @@ public:
     }
 
     // Priority Non-Preemptive Scheduling Algorithm
+    static void P_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    {
+        P_NP(processes, gantt, table, false);
+    }
+
     static void P_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, bool high = false)
     {
         int clock = 0;

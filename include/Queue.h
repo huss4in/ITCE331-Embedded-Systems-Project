@@ -1,13 +1,3 @@
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#elif defined(ARDUINO) && ARDUINO < 100
-#include "WProgram.h"
-#endif
-
-#if __cplusplus <= 199711L
-#define nullptr NULL
-#endif
-
 template <typename T>
 class Queue
 {
@@ -100,36 +90,6 @@ public:
 
         return queue;
     }
-
-    // Queue(const Queue &queue)
-    // {
-    //     this->count = queue.count;
-
-    //     this->head = nullptr;
-    //     this->tail = nullptr;
-
-    //     this->maxMemory = queue.maxMemory;
-    //     this->maxItems = queue.maxItems;
-
-    //     for (Node *node = queue.head; node != nullptr; node = node->next)
-    //         this->push(node->item);
-    // }
-
-    // Queue &operator=(const Queue &queue)
-    // {
-    //     this->count = queue.size();
-
-    //     this->head = nullptr;
-    //     this->tail = nullptr;
-
-    //     this->maxMemory = queue.maxMemory;
-    //     this->maxItems = queue.maxItems;
-
-    //     for (Node *node = queue.head; node != nullptr; node = node->next)
-    //         this->push(node->item);
-
-    //     return *this;
-    // };
 
     // Push an item into the queue
     bool push(T item)
@@ -256,7 +216,7 @@ public:
     inline uint16_t itemSize() { return sizeof(Node); }
 
     // Returns the size of the queue (maximum number of items)
-    inline uint32_t maxQueueSize() { return this->maxItems; }
+    inline uint16_t maxQueueSize() { return this->maxItems; }
 
     // Returns the size of the queue (maximum size in bytes)
     inline uint16_t maxMemorySize() { return this->maxMemory; }
@@ -291,7 +251,6 @@ public:
     // print queue items
     void printItems()
     {
-
         Node *ptr = this->head;
 
         Serial.print("---\n");
