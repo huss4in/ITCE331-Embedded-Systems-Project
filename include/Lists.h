@@ -1,5 +1,4 @@
-
-class List
+class Lists
 {
 public:
 #include "Lists/Queue.h"
