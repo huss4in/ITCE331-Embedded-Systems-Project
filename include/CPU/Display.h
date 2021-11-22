@@ -52,7 +52,7 @@ public:
      }
 
      // Function to display Completion Queue and all the time
-     static void table(Queue<CPU::Process> processes, bool p = true)
+     static void table(List::Queue<CPU::Process> processes, bool p = true)
      {
 
           printLine(p);
@@ -66,7 +66,6 @@ public:
           printLine(p);
 
           while (processes.notEmpty())
-
           {
                CPU::Process process = processes.pop();
 
@@ -97,7 +96,7 @@ public:
           Serial.println("\n");
      }
 
-     static void times(Queue<CPU::Process> processes)
+     static void times(List::Queue<CPU::Process> processes)
      {
           uint16_t size = processes.size();
 
@@ -143,10 +142,10 @@ public:
      }
 
      // Function to display Gantt Chart
-     static void gantt(Queue<CPU::Process> gantt)
+     static void gantt(List::Queue<CPU::Process> gantt)
      {
 
-          Queue<CPU::Process> processes = gantt;
+          List::Queue<CPU::Process> processes = gantt;
 
           Serial.print("Gantt Chart (IS indicates ideal state) :- \n\n+");
 
@@ -221,9 +220,9 @@ public:
      }
 
      // Preform the Algorithm and display the results
-     static void display(void (*algorithm)(Queue<CPU::Process>, Queue<CPU::Process> *, Queue<CPU::Process> *), Queue<CPU::Process> processes)
+     static void display(void (*algorithm)(List::Queue<CPU::Process>, List::Queue<CPU::Process> *, List::Queue<CPU::Process> *), List::Queue<CPU::Process> processes)
      {
-          Queue<CPU::Process> gantt, table;
+          List::Queue<CPU::Process> gantt, table;
 
           // Preform the scheduling algorithm
           algorithm(processes, &gantt, &table);

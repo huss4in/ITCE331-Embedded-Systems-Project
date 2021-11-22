@@ -2,7 +2,7 @@ class Algorithm
 {
 public:
     // Fist Come First Served Scheduling Algorithm
-    static void FCFS(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void FCFS(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int time = 0;
 
@@ -44,7 +44,7 @@ public:
     }
 
     // Shortest Job First Scheduling Algorithm
-    static void SJF_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void SJF_P(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int clock = 0;
 
@@ -97,7 +97,7 @@ public:
     }
 
     // Shortest Job First (Non-Preemptive) Scheduling Algorithm
-    static void SJF_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void SJF_NP(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int clock = 0;
 
@@ -133,7 +133,7 @@ public:
     }
 
     // Longest Job First Scheduling Algorithm
-    static void LJF_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void LJF_P(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int clock = 0;
 
@@ -182,7 +182,7 @@ public:
     }
 
     // Longest Job First (Non-Preemptive) Scheduling Algorithm
-    static void LJF_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void LJF_NP(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int clock = 0;
         CPU::Process process;
@@ -216,12 +216,12 @@ public:
     }
 
     // Round Robin Scheduling Algorithm
-    static void RR(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void RR(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         RR(processes, gantt, table, 2);
     }
 
-    static void RR(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, int rr_time_slice = 2)
+    static void RR(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table, int rr_time_slice = 2)
     {
         int clock = 0;
 
@@ -274,12 +274,12 @@ public:
     }
 
     // Priority Preemptive Scheduling Algorithm
-    static void P_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void P_P(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         P_P(processes, gantt, table, false);
     }
 
-    static void P_P(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, bool high = false)
+    static void P_P(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table, bool high = false)
     {
         int clock = 0;
 
@@ -376,12 +376,12 @@ public:
     }
 
     // Priority Non-Preemptive Scheduling Algorithm
-    static void P_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void P_NP(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         P_NP(processes, gantt, table, false);
     }
 
-    static void P_NP(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table, bool high = false)
+    static void P_NP(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table, bool high = false)
     {
         int clock = 0;
 
@@ -452,7 +452,7 @@ public:
     }
 
     // Highest Response Ratio Next Scheduling Algorithm
-    static void HRRN(Queue<CPU::Process> processes, Queue<CPU::Process> *gantt, Queue<CPU::Process> *table)
+    static void HRRN(List::Queue<CPU::Process> processes, List::Queue<CPU::Process> *gantt, List::Queue<CPU::Process> *table)
     {
         int clock = 0;
 
@@ -489,7 +489,7 @@ public:
     }
 
     // Get total completion time of the processes
-    static double get_total_completion_time(Queue<CPU::Process> processes)
+    static double get_total_completion_time(List::Queue<CPU::Process> processes)
     {
         double total = 0;
 
@@ -500,7 +500,7 @@ public:
     }
 
     // Get total waiting time of the processes
-    static double get_total_waiting_time(Queue<CPU::Process> processes)
+    static double get_total_waiting_time(List::Queue<CPU::Process> processes)
     {
         double total = 0;
 
@@ -511,7 +511,7 @@ public:
     }
 
     // Get total turnaround time of the processes
-    static double get_total_turnaround_time(Queue<CPU::Process> processes)
+    static double get_total_turnaround_time(List::Queue<CPU::Process> processes)
     {
         double total = 0;
 
@@ -522,7 +522,7 @@ public:
     }
 
     // Get total response time of the processes
-    static double get_total_reponse_time(Queue<CPU::Process> processes)
+    static double get_total_reponse_time(List::Queue<CPU::Process> processes)
     {
         double total = 0;
 

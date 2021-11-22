@@ -25,13 +25,13 @@ void test_countDigit_negative()
 // ? Test Queue<CPU::Process> Deep Copy
 void test_cpu_queue_deep_copy()
 {
-    Queue<CPU::Process> queue;
+    List::Queue<CPU::Process> queue;
 
     queue.push(CPU::Process(1, 1, 1));
     queue.push(CPU::Process(2, 2, 2));
     queue.push(CPU::Process(3, 3, 3));
 
-    Queue<CPU::Process> second = queue;
+    List::Queue<CPU::Process> second = queue;
 
     TEST_ASSERT_EQUAL(3, second.size());
 

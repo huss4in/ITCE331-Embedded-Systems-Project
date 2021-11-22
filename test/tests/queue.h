@@ -1,6 +1,6 @@
 #define Q_SIZE 5
 
-void push_help(Queue<int> *queue)
+void push_help(List::Queue<int> *queue)
 {
     for (uint8_t i = 1; i <= Q_SIZE; i++)
         queue->push(i);
@@ -12,7 +12,7 @@ void push_help(Queue<int> *queue)
 // ? Test Queue push normal
 void test_queue_push()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     for (uint8_t i = 1; i <= Q_SIZE; i++)
     {
@@ -24,7 +24,7 @@ void test_queue_push()
 // ? Test Queue push when queue is full
 void test_queue_push_full()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     push_help(&queue);
 
@@ -34,7 +34,7 @@ void test_queue_push_full()
 // ? Test Queue pop normal
 void test_queue_pop()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     push_help(&queue);
 
@@ -48,7 +48,7 @@ void test_queue_pop()
 // ? Test Queue pop when queue is empty
 void test_queue_pop_empty()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     TEST_ASSERT_EQUAL(0, queue.pop());
     queue.printItems();
@@ -57,7 +57,7 @@ void test_queue_pop_empty()
 // ? Test Queue pop with no paremeter (first item)
 void test_queue_pop_index()
 {
-    Queue<int> queue = Queue<int>();
+    List::Queue<int> queue = List::Queue<int>();
 
     push_help(&queue);
 
@@ -69,7 +69,7 @@ void test_queue_pop_index()
 // ? Test Queue pop in the middle of queue
 void test_queue_pop_index_middle()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     push_help(&queue);
 
@@ -80,7 +80,7 @@ void test_queue_pop_index_middle()
 // ? Test Queue pop in the middle of queue
 void test_queue_pop_index_end()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     push_help(&queue);
 
@@ -91,7 +91,7 @@ void test_queue_pop_index_end()
 // ? Test Queue front and back
 void test_queue_front_back()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     for (uint8_t i = 1; i < Q_SIZE; i++)
     {
@@ -106,7 +106,7 @@ void test_queue_front_back()
 // ? Test Queue size
 void test_queue_size()
 {
-    Queue<int> queue = Queue<int>(Q_SIZE);
+    List::Queue<int> queue = List::Queue<int>(Q_SIZE);
 
     TEST_ASSERT_EQUAL(0, queue.size());
 

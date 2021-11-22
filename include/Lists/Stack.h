@@ -1,5 +1,5 @@
 template <typename T>
-class Queue
+class Stack
 {
 private:
     class Node
@@ -12,21 +12,29 @@ private:
         Node(T item) { this->item = item; }
 
         // Destructor
-        ~Node()
+        ~Node() { this->next = nullptr; }
+
+        // Copy Constructor
+        Node(const Node &other) { this->item = other.item, this->next = other.next; }
+
+        // Copy Assignment Operator
+        Node &operator=(const Node &other)
         {
-            this->next = nullptr;
+            this->item = other.item;
+            this->next = other.next;
+            return *this;
         }
     };
 
-    Node *head; // The head of the queue
-    Node *tail; // The tail of the queue
+    Node *head; // The head of the Stack
+    Node *tail; // The tail of the Stack
 
-    uint16_t count;     // Count in items inside the queue
-    uint16_t maxItems;  // The max number of items the queue can hold
-    uint16_t maxMemory; // The max memory the queue can hold
+    uint16_t count;     // Count in items inside the Stack
+    uint16_t maxItems;  // The max number of items the Stack can hold
+    uint16_t maxMemory; // The max memory the Stack can hold
 
 public:
-    Queue(uint16_t maxItems = -1, uint16_t maxMemory = 2048)
+    Stack(uint16_t maxItems = -1, uint16_t maxMemory = 2048)
     {
         this->count = 0;
 
@@ -40,7 +48,7 @@ public:
             this->maxItems = maxItems;
     }
 
-    ~Queue()
+    ~Stack()
     {
         for (Node *node = head; node != nullptr; node = head)
         {
@@ -50,7 +58,7 @@ public:
     }
 
     // Copy Constructor
-    Queue(const Queue &q)
+    Stack(const Stack &q)
     {
         this->count = 0;
 
@@ -65,7 +73,7 @@ public:
     }
 
     // Assignment operator
-    Queue &operator=(const Queue &q)
+    Stack &operator=(const Stack &q)
     {
         this->count = 0;
 
@@ -81,17 +89,7 @@ public:
         return *this;
     }
 
-    Queue queue_copy()
-    {
-        Queue queue(this->maxItems, this->maxMemory);
-
-        for (Node *node = this->head; node != nullptr; node = node->next)
-            queue.push(node->item);
-
-        return queue;
-    }
-
-    // Push an item into the queue
+    // Push an item into the Stack
     bool push(T item)
     {
         if (this->full())
@@ -118,7 +116,7 @@ public:
         return true;
     }
 
-    // Pop them item in the front of the queue
+    // Pop them item in the front of the Stack
     T pop()
     {
         if (this->empty())
@@ -164,7 +162,7 @@ public:
         return item;
     }
 
-    // Get the item in the front of the queue.
+    // Get the item in the front of the Stack.
     T front()
     {
         if (this->empty())
@@ -173,7 +171,7 @@ public:
         return head->item;
     }
 
-    // Get the item in the back of the queue.
+    // Get the item in the back of the Stack.
     T back()
     {
         if (this->empty())
@@ -200,38 +198,38 @@ public:
         return &(tail->item);
     }
 
-    // Returns the number of items currently in the queue.
-    inline uint16_t size() { return this->count; }
+    // Returns the number of items currently in the Stack.
+    uint16_t size() { return this->count; }
 
-    // Returns true if the queue is empty, false otherwise.
-    inline bool empty() { return this->count == 0; }
+    // Returns true if the Stack is empty, false otherwise.
+    bool empty() { return this->count == 0; }
 
-    // Returns true if the queue is not empty, false otherwise.
-    inline bool notEmpty() { return this->count != 0; }
+    // Returns true if the Stack is not empty, false otherwise.
+    bool notEmpty() { return this->count != 0; }
 
-    // Returns true if the queue is full, false otherwise.
-    inline bool full() { return this->count == this->maxItems; }
+    // Returns true if the Stack is full, false otherwise.
+    bool full() { return this->count == this->maxItems; }
 
-    // Returns the size of the queue item in bytes.
-    inline uint16_t itemSize() { return sizeof(Node); }
+    // Returns the size of the Stack item in bytes.
+    uint16_t itemSize() { return sizeof(Node); }
 
-    // Returns the size of the queue (maximum number of items)
-    inline uint16_t maxQueueSize() { return this->maxItems; }
+    // Returns the size of the Stack (maximum number of items)
+    uint16_t maxSize() { return this->maxItems; }
 
-    // Returns the size of the queue (maximum size in bytes)
-    inline uint16_t maxMemorySize() { return this->maxMemory; }
+    // Returns the size of the Stack (maximum size in bytes)
+    uint16_t maxMemorySize() { return this->maxMemory; }
 
-    // print queue
+    // print Stack
     void print()
     {
         this->printHeader();
         this->printItems();
     }
 
-    // print queue header
+    // print list header
     void printHeader()
     {
-        Serial.print("Queue: ");
+        Serial.print("Stack: ");
 
         Serial.print(this->itemSize());
         Serial.print(" bytes / ");
@@ -239,7 +237,7 @@ public:
         Serial.print(this->maxMemorySize());
         Serial.print(" max bytes = ");
 
-        Serial.print(this->maxQueueSize());
+        Serial.print(this->maxSize());
         Serial.print(" max items ");
 
         Serial.print("| Size ");
@@ -248,7 +246,7 @@ public:
         Serial.println();
     }
 
-    // print queue items
+    // print Stack items
     void printItems()
     {
         Node *ptr = this->head;

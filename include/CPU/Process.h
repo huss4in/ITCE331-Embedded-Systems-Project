@@ -80,7 +80,7 @@ public:
         return p1.arrival_time < p2.arrival_time;
     }
 
-    static Process pop_index(Queue<Process> *processes, int index)
+    static Process pop_index(List::Queue<Process> *processes, int index)
     {
 
         if (index == 0)
@@ -88,7 +88,7 @@ public:
 
         Process process;
 
-        Queue<Process> temp;
+        List::Queue<Process> temp;
 
         for (int i = 0; i < index; i++)
             temp.push(processes->pop());
@@ -103,7 +103,7 @@ public:
         return process;
     }
 
-    static int min_BT(Queue<Process> main_queue, int clock)
+    static int min_BT(List::Queue<Process> main_queue, int clock)
     {
         int min = 0;
         while (!main_queue.empty() && main_queue.front().arrival_time <= clock)
@@ -116,7 +116,7 @@ public:
     }
 
     // Function to implement maximum Burst Time
-    static int max_BT(Queue<Process> main_queue, int limit)
+    static int max_BT(List::Queue<Process> main_queue, int limit)
     {
         int max = 0;
         while (!main_queue.empty() && main_queue.front().arrival_time <= limit)
@@ -128,7 +128,7 @@ public:
         return max;
     }
 
-    static int min_BT_index(Queue<Process> main_queue, int limit)
+    static int min_BT_index(List::Queue<Process> main_queue, int limit)
     {
         int index, i = 0;
         int min = 0;
@@ -146,7 +146,7 @@ public:
     }
 
     // Function to find maximum Burst Time Index w.r.t clock limit
-    static int max_BT_index(Queue<Process> main_queue, int limit)
+    static int max_BT_index(List::Queue<Process> main_queue, int limit)
     {
         int index, i = 0;
         int max = 0;
@@ -170,7 +170,7 @@ public:
     //variable because we need to specify
     // True=highest number as highest priority
     // False=lowest number as highest priority
-    static int max_priority(Queue<Process> main_priority_queue, int limit, bool high)
+    static int max_priority(List::Queue<Process> main_priority_queue, int limit, bool high)
     {
         int max = -1;
         if (high == 1)
@@ -195,7 +195,7 @@ public:
     }
 
     // Function to implement maximum priority index
-    static int max_priority_index(Queue<Process> main_queue, int limit, bool high)
+    static int max_priority_index(List::Queue<Process> main_queue, int limit, bool high)
     {
         int max = -1, i = 0, index = 0;
         if (high == 1)
@@ -229,7 +229,7 @@ public:
 
     // Function to implement maximum Response Ratio
     // index w.r.t clock limit for arrival time
-    static int max_response_ratio_index(Queue<Process> ready_queue, int limit)
+    static int max_response_ratio_index(List::Queue<Process> ready_queue, int limit)
     {
         int index, i = 0;
         double response_ratio = 0, max = 0;

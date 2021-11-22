@@ -1,14 +1,16 @@
 // Unity Test Framework
 #include <unity.h>
+#include <Arduino.h>
 
 // Classes
-#include "Queue.h"
-#include "CPU/CPU.h"
+#include "Lists.h"
+#include "CPU.h"
+// #include "Lists/LinkedList.h"
 
 // Tests
 #include "tests/queue.h"
 #include "tests/CPU.h"
-#include "tests/other.h"
+// #include "tests/other.h"
 
 void setup()
 {
@@ -16,7 +18,7 @@ void setup()
 
     test_queue(); // Run queue tests
     test_cpu();   // Run CPU tests
-    test_other(); // Run other tests
+    // test_other(); // Run other tests
 
     UNITY_END(); // End unity testing
 }

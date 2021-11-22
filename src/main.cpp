@@ -1,15 +1,15 @@
 #include <Arduino.h>
 
-#include "Queue.h"
-#include "CPU/CPU.h"
+#include "Lists.h"
+#include "CPU.h"
 
 void setup()
 {
     // Begin Serial Communication
     Serial.begin(115200);
 
-    // Initialize the processes and gantt queue
-    Queue<CPU::Process> processes;
+    // Initialize the processes
+    List::Queue<CPU::Process> processes;
 
     // Set sample processes
     processes.push(CPU::Process(1, 0, 5, 3));
