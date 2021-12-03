@@ -1,270 +1,222 @@
-template <typename T>
-class Stack
+
+template <typename Data>
+DataStructure::Stack<Data>::Stack(uint16_t maxItems, uint16_t maxMemory)
 {
-private:
-    class Node
+    this->count = 0;
+
+    this->head = nullptr;
+    this->tail = nullptr;
+
+    this->maxMemory = maxMemory;
+    this->maxItems = maxMemory / sizeof(Node);
+
+    if (maxItems > 0 && this->maxItems > maxItems)
+        this->maxItems = maxItems;
+}
+
+// Destructor
+template <typename Data>
+DataStructure::Stack<Data>::~Stack()
+{
+    for (Node *node = this->head; node != nullptr; node = this->head)
     {
-    public:
-        T item;
-        Node *next = nullptr;
+        this->head = node->next;
+        delete node;
+    }
+}
 
-        // Constructor
-        Node(T item) { this->item = item; }
+// Copy Constructor
+template <typename Data>
+DataStructure::Stack<Data>::Stack(const Stack &stack)
+{
+    this->count = 0;
 
-        // Destructor
-        ~Node() { this->next = nullptr; }
+    this->head = nullptr;
+    this->tail = nullptr;
 
-        // Copy Constructor
-        Node(const Node &other) { this->item = other.item, this->next = other.next; }
+    this->maxMemory = stack.maxMemory;
+    this->maxItems = stack.maxItems;
 
-        // Copy Assignment Operator
-        Node &operator=(const Node &other)
-        {
-            this->item = other.item;
-            this->next = other.next;
-            return *this;
-        }
-    };
+    for (Node *node = stack.head; node != nullptr; node = node->next)
+        this->push(node->data);
+}
 
-    Node *head; // The head of the Stack
-    Node *tail; // The tail of the Stack
+// Assignment operator
+template <typename Data>
+DataStructure::Stack<Data> &DataStructure::Stack<Data>::operator=(const Stack &stack)
+{
+    this->count = 0;
 
-    uint16_t count;     // Count in items inside the Stack
-    uint16_t maxItems;  // The max number of items the Stack can hold
-    uint16_t maxMemory; // The max memory the Stack can hold
+    this->head = nullptr;
+    this->tail = nullptr;
 
-public:
-    Stack(uint16_t maxItems = -1, uint16_t maxMemory = 2048)
+    this->maxMemory = stack.maxMemory;
+    this->maxItems = stack.maxItems;
+
+    for (Node *node = stack.head; node != nullptr; node = node->next)
+        this->push(node->data);
+
+    return *this;
+}
+
+// Push data into the stack
+template <typename Data>
+bool DataStructure::Stack<Data>::push(Data data)
+{
+    if (this->full())
+        return false;
+
+    Node *node = new Node(data);
+
+    if (node == nullptr)
+        return false;
+
+    if (this->empty())
     {
-        this->count = 0;
-
-        this->head = nullptr;
-        this->tail = nullptr;
-
-        this->maxMemory = maxMemory;
-        this->maxItems = maxMemory / sizeof(Node);
-
-        if (maxItems > 0 && this->maxItems > maxItems)
-            this->maxItems = maxItems;
+        this->head = node;
+        this->tail = node;
+    }
+    else
+    {
+        node->next = this->head;
+        this->head = node;
     }
 
-    ~Stack()
+    this->count++;
+
+    return true;
+}
+
+// Pop data from the stack
+template <typename Data>
+Data DataStructure::Stack<Data>::pop()
+{
+    if (this->empty())
+        return Data();
+
+    Data data = this->head->data;
+
+    Node *ptr = this->head;
+
+    this->head = this->head->next;
+
+    delete ptr;
+
+    this->count--;
+
+    return data;
+}
+
+// Pop and Return data at index
+template <typename Data>
+Data DataStructure::Stack<Data>::pop_index(uint16_t index)
+{
+    // H: 5 <-- 4 <-- 3 <-- 2 <-- 1 :T | index = 3
+
+    if (this->empty() || index >= this->size())
+        return Data();
+
+    if (index == 0)
+        return this->pop();
+
+    Node *ptr = this->head;
+
+    for (uint8_t i = 0; i < index - 1; i++)
+        ptr = ptr->next;
+
+    Data data = ptr->next->data;
+
+    Node *to_delete = ptr->next;
+
+    ptr->next = to_delete->next;
+
+    delete to_delete;
+
+    this->count--;
+
+    return data;
+}
+
+// Get data in the front of the stack.
+template <typename Data>
+Data DataStructure::Stack<Data>::front()
+{
+    if (this->empty())
+        return Data();
+
+    return this->head->data;
+}
+
+// Get data in the back of the stack.
+template <typename Data>
+Data DataStructure::Stack<Data>::back()
+{
+    if (this->empty())
+        return Data();
+
+    return this->tail->data;
+}
+
+// Return pointer to head
+template <typename Data>
+Data *DataStructure::Stack<Data>::headPtr()
+{
+    if (this->empty())
+        return nullptr;
+
+    return &(this->head->data);
+}
+
+// Return pointer to tail
+template <typename Data>
+Data *DataStructure::Stack<Data>::tailPtr()
+{
+    if (this->empty())
+        return nullptr;
+
+    return &(this->tail->data);
+}
+
+// print stack header
+template <typename Data>
+void DataStructure::Stack<Data>::printHeader()
+{
+    Serial.print("Stack: ");
+
+    Serial.print(this->itemSize());
+    Serial.print(" bytes / ");
+
+    Serial.print(this->maxMemorySize());
+    Serial.print(" max bytes = ");
+
+    Serial.print(this->maxSize());
+    Serial.print(" max items ");
+
+    Serial.print("| Size ");
+    Serial.print(this->size());
+
+    Serial.println();
+}
+
+// print stack items
+template <typename Data>
+void DataStructure::Stack<Data>::printItems()
+{
+    Node *ptr = this->head;
+
+    // Serial.print("---\n");
+    Serial.print("H: ");
+    Serial.print(ptr->data);
+
+    for (uint8_t i = 1; i < this->size(); i++)
     {
-        for (Node *node = head; node != nullptr; node = head)
-        {
-            head = node->next;
-            delete node;
-        }
+        ptr = ptr->next;
+        Serial.print(" <-- ");
+        Serial.print(ptr->data);
     }
 
-    // Copy Constructor
-    Stack(const Stack &q)
-    {
-        this->count = 0;
+    Serial.print(" :T");
+    Serial.print("\n---");
 
-        this->head = nullptr;
-        this->tail = nullptr;
-
-        this->maxMemory = q.maxMemory;
-        this->maxItems = q.maxItems;
-
-        for (Node *node = q.head; node != nullptr; node = node->next)
-            this->push(node->item);
-    }
-
-    // Assignment operator
-    Stack &operator=(const Stack &q)
-    {
-        this->count = 0;
-
-        this->head = nullptr;
-        this->tail = nullptr;
-
-        this->maxMemory = q.maxMemory;
-        this->maxItems = q.maxItems;
-
-        for (Node *node = q.head; node != nullptr; node = node->next)
-            this->push(node->item);
-
-        return *this;
-    }
-
-    // Push an item into the Stack
-    bool push(T item)
-    {
-        if (this->full())
-            return false;
-
-        Node *node = new Node(item);
-
-        if (node == nullptr)
-            return false;
-
-        if (this->empty())
-        {
-            this->head = node;
-            this->tail = node;
-        }
-        else
-        {
-            this->tail->next = node;
-            this->tail = node;
-        }
-
-        this->count++;
-
-        return true;
-    }
-
-    // Pop them item in the front of the Stack
-    T pop()
-    {
-        if (this->empty())
-            return T();
-
-        T item = this->head->item;
-
-        Node *ptr = this->head;
-
-        this->head = this->head->next;
-
-        delete ptr;
-
-        this->count--;
-
-        return item;
-    }
-
-    // Pop and Peturn item ad index
-    T pop_index(uint16_t index = 0)
-    {
-        if (index < 0 || index >= this->size())
-            return T();
-
-        if (index == 0)
-            return this->pop();
-
-        Node *ptr = this->head;
-
-        for (uint8_t i = 0; i < index - 1; i++)
-            ptr = ptr->next;
-
-        T item = ptr->next->item;
-
-        Node *to_delete = ptr->next;
-
-        ptr->next = to_delete->next;
-
-        delete to_delete;
-
-        this->count--;
-
-        return item;
-    }
-
-    // Get the item in the front of the Stack.
-    T front()
-    {
-        if (this->empty())
-            return T();
-
-        return head->item;
-    }
-
-    // Get the item in the back of the Stack.
-    T back()
-    {
-        if (this->empty())
-            return T();
-
-        return tail->item;
-    }
-
-    // Return pointer to head
-    T *headPtr()
-    {
-        if (this->empty())
-            return nullptr;
-
-        return &(head->item);
-    }
-
-    // Return pointer to tail
-    T *tailPtr()
-    {
-        if (this->empty())
-            return nullptr;
-
-        return &(tail->item);
-    }
-
-    // Returns the number of items currently in the Stack.
-    uint16_t size() { return this->count; }
-
-    // Returns true if the Stack is empty, false otherwise.
-    bool empty() { return this->count == 0; }
-
-    // Returns true if the Stack is not empty, false otherwise.
-    bool notEmpty() { return this->count != 0; }
-
-    // Returns true if the Stack is full, false otherwise.
-    bool full() { return this->count == this->maxItems; }
-
-    // Returns the size of the Stack item in bytes.
-    uint16_t itemSize() { return sizeof(Node); }
-
-    // Returns the size of the Stack (maximum number of items)
-    uint16_t maxSize() { return this->maxItems; }
-
-    // Returns the size of the Stack (maximum size in bytes)
-    uint16_t maxMemorySize() { return this->maxMemory; }
-
-    // print Stack
-    void print()
-    {
-        this->printHeader();
-        this->printItems();
-    }
-
-    // print list header
-    void printHeader()
-    {
-        Serial.print("Stack: ");
-
-        Serial.print(this->itemSize());
-        Serial.print(" bytes / ");
-
-        Serial.print(this->maxMemorySize());
-        Serial.print(" max bytes = ");
-
-        Serial.print(this->maxSize());
-        Serial.print(" max items ");
-
-        Serial.print("| Size ");
-        Serial.print(this->size());
-
-        Serial.println();
-    }
-
-    // print Stack items
-    void printItems()
-    {
-        Node *ptr = this->head;
-
-        Serial.print("---\n");
-        Serial.print("H: ");
-        Serial.print(ptr->item);
-
-        for (uint8_t i = 1; i < this->size(); i++)
-        {
-            ptr = ptr->next;
-            Serial.print(" <-- ");
-            Serial.print(ptr->item);
-        }
-
-        Serial.print(" :T");
-        Serial.print("\n---");
-
-        Serial.println();
-    }
-};
+    Serial.println();
+}

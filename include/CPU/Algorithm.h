@@ -1,6 +1,6 @@
 
 // Fist Come First Served Scheduling Algorithm
-void CPU::Algorithm::FCFS(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::FCFS(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int time = 0;
 
@@ -42,7 +42,7 @@ void CPU::Algorithm::FCFS(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU
 }
 
 // Shortest Job First Scheduling Algorithm
-void CPU::Algorithm::SJF_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::SJF_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -95,7 +95,7 @@ void CPU::Algorithm::SJF_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CP
 }
 
 // Shortest Job First (Non-Preemptive) Scheduling Algorithm
-void CPU::Algorithm::SJF_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::SJF_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -131,7 +131,7 @@ void CPU::Algorithm::SJF_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<C
 }
 
 // Longest Job First Scheduling Algorithm
-void CPU::Algorithm::LJF_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::LJF_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -180,7 +180,7 @@ void CPU::Algorithm::LJF_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CP
 }
 
 // Longest Job First (Non-Preemptive) Scheduling Algorithm
-void CPU::Algorithm::LJF_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::LJF_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
     CPU::Process process;
@@ -214,12 +214,12 @@ void CPU::Algorithm::LJF_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<C
 }
 
 // Round Robin Scheduling Algorithm
-void CPU::Algorithm::RR(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::RR(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     RR(processes, gantt, table, 2);
 }
 
-void CPU::Algorithm::RR(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table, int rr_time_slice)
+void CPU::Algorithm::RR(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, int rr_time_slice)
 {
     int clock = 0;
 
@@ -272,12 +272,12 @@ void CPU::Algorithm::RR(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::
 }
 
 // Priority Preemptive Scheduling Algorithm
-void CPU::Algorithm::P_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::P_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     P_P(processes, gantt, table, false);
 }
 
-void CPU::Algorithm::P_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table, bool high)
+void CPU::Algorithm::P_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, bool high)
 {
     int clock = 0;
 
@@ -374,12 +374,12 @@ void CPU::Algorithm::P_P(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU:
 }
 
 // Priority Non-Preemptive Scheduling Algorithm
-void CPU::Algorithm::P_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::P_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     P_NP(processes, gantt, table, false);
 }
 
-void CPU::Algorithm::P_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table, bool high)
+void CPU::Algorithm::P_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, bool high)
 {
     int clock = 0;
 
@@ -450,7 +450,7 @@ void CPU::Algorithm::P_NP(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU
 }
 
 // Highest Response Ratio Next Scheduling Algorithm
-void CPU::Algorithm::HRRN(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU::Process> *gantt, Lists::Queue<CPU::Process> *table)
+void CPU::Algorithm::HRRN(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -487,7 +487,7 @@ void CPU::Algorithm::HRRN(Lists::Queue<CPU::Process> processes, Lists::Queue<CPU
 }
 
 // Get total completion time of the processes
-double CPU::Algorithm::get_total_completion_time(Lists::Queue<CPU::Process> processes)
+double CPU::Algorithm::get_total_completion_time(DataStructure::Queue<CPU::Process> processes)
 {
     double total = 0;
 
@@ -498,7 +498,7 @@ double CPU::Algorithm::get_total_completion_time(Lists::Queue<CPU::Process> proc
 }
 
 // Get total waiting time of the processes
-double CPU::Algorithm::get_total_waiting_time(Lists::Queue<CPU::Process> processes)
+double CPU::Algorithm::get_total_waiting_time(DataStructure::Queue<CPU::Process> processes)
 {
     double total = 0;
 
@@ -509,7 +509,7 @@ double CPU::Algorithm::get_total_waiting_time(Lists::Queue<CPU::Process> process
 }
 
 // Get total turnaround time of the processes
-double CPU::Algorithm::get_total_turnaround_time(Lists::Queue<CPU::Process> processes)
+double CPU::Algorithm::get_total_turnaround_time(DataStructure::Queue<CPU::Process> processes)
 {
     double total = 0;
 
@@ -520,7 +520,7 @@ double CPU::Algorithm::get_total_turnaround_time(Lists::Queue<CPU::Process> proc
 }
 
 // Get total response time of the processes
-double CPU::Algorithm::get_total_reponse_time(Lists::Queue<CPU::Process> processes)
+double CPU::Algorithm::get_total_reponse_time(DataStructure::Queue<CPU::Process> processes)
 {
     double total = 0;
 

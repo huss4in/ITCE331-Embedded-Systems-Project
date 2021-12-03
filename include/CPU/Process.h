@@ -1,7 +1,13 @@
-int CPU::Process::nextID = 0;
+uint8_t CPU::Process::nextID = 0;
+
+// Reset the process ID counter
+void CPU::Process::resetID()
+{
+    nextID = 0;
+}
 
 // Constructor
-CPU::Process::Process(int id, int arrival_time, int burst_time, int priority)
+CPU::Process::Process(int arrival_time, int burst_time, int priority = 0)
 {
     this->id = ++nextID;
     this->arrival_time = arrival_time;
@@ -74,7 +80,7 @@ void CPU::Process::set_response_time(int time)
     response_time = time - initial_arrival_time;
 }
 
-CPU::Process CPU::Process::pop_index(Lists::Queue<CPU::Process> *processes, int index)
+CPU::Process CPU::Process::pop_index(DataStructure::Queue<CPU::Process> *processes, int index)
 {
 
     if (index == 0)
@@ -82,7 +88,7 @@ CPU::Process CPU::Process::pop_index(Lists::Queue<CPU::Process> *processes, int 
 
     CPU::Process process;
 
-    Lists::Queue<CPU::Process> temp;
+    DataStructure::Queue<CPU::Process> temp;
 
     for (int i = 0; i < index; i++)
         temp.push(processes->pop());
@@ -97,7 +103,7 @@ CPU::Process CPU::Process::pop_index(Lists::Queue<CPU::Process> *processes, int 
     return process;
 }
 
-int CPU::Process::min_BT(Lists::Queue<CPU::Process> main_queue, int clock)
+int CPU::Process::min_BT(DataStructure::Queue<CPU::Process> main_queue, int clock)
 {
     int min = 0;
     while (!main_queue.empty() && main_queue.front().arrival_time <= clock)
@@ -110,7 +116,7 @@ int CPU::Process::min_BT(Lists::Queue<CPU::Process> main_queue, int clock)
 }
 
 // Function to implement maximum Burst Time
-int CPU::Process::max_BT(Lists::Queue<CPU::Process> main_queue, int limit)
+int CPU::Process::max_BT(DataStructure::Queue<CPU::Process> main_queue, int limit)
 {
     int max = 0;
     while (!main_queue.empty() && main_queue.front().arrival_time <= limit)
@@ -122,7 +128,7 @@ int CPU::Process::max_BT(Lists::Queue<CPU::Process> main_queue, int limit)
     return max;
 }
 
-int CPU::Process::min_BT_index(Lists::Queue<CPU::Process> main_queue, int limit)
+int CPU::Process::min_BT_index(DataStructure::Queue<CPU::Process> main_queue, int limit)
 {
     int index, i = 0;
     int min = 0;
@@ -141,7 +147,7 @@ int CPU::Process::min_BT_index(Lists::Queue<CPU::Process> main_queue, int limit)
 }
 
 // Function to find maximum Burst Time Index w.r.t clock limit
-int CPU::Process::max_BT_index(Lists::Queue<CPU::Process> main_queue, int limit)
+int CPU::Process::max_BT_index(DataStructure::Queue<CPU::Process> main_queue, int limit)
 {
     int index, i = 0;
     int max = 0;
@@ -161,11 +167,11 @@ int CPU::Process::max_BT_index(Lists::Queue<CPU::Process> main_queue, int limit)
 }
 
 // Function to implement maximum priority w.r.t
-//priority and also 2nd argument has boolean
-//variable because we need to specify
+// priority and also 2nd argument has boolean
+// variable because we need to specify
 // True=highest number as highest priority
 // False=lowest number as highest priority
-int CPU::Process::max_priority(Lists::Queue<CPU::Process> main_priority_queue, int limit, bool high)
+int CPU::Process::max_priority(DataStructure::Queue<CPU::Process> main_priority_queue, int limit, bool high)
 {
     int max = -1;
     if (high == 1)
@@ -190,7 +196,7 @@ int CPU::Process::max_priority(Lists::Queue<CPU::Process> main_priority_queue, i
 }
 
 // Function to implement maximum priority index
-int CPU::Process::max_priority_index(Lists::Queue<CPU::Process> main_queue, int limit, bool high)
+int CPU::Process::max_priority_index(DataStructure::Queue<CPU::Process> main_queue, int limit, bool high)
 {
     int max = -1, i = 0, index = 0;
     if (high == 1)
@@ -224,7 +230,7 @@ int CPU::Process::max_priority_index(Lists::Queue<CPU::Process> main_queue, int 
 
 // Function to implement maximum Response Ratio
 // index w.r.t clock limit for arrival time
-int CPU::Process::max_response_ratio_index(Lists::Queue<CPU::Process> ready_queue, int limit)
+int CPU::Process::max_response_ratio_index(DataStructure::Queue<CPU::Process> ready_queue, int limit)
 {
     int index, i = 0;
     double response_ratio = 0, max = 0;

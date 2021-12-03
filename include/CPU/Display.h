@@ -48,7 +48,7 @@ int CPU::Display::countDigit(int n)
 }
 
 // Function to display Completion Queue and all the time
-void CPU::Display::table(Lists::Queue<CPU::Process> processes)
+void CPU::Display::table(DataStructure::Queue<CPU::Process> processes)
 {
      bool p = true;
      printLine(p);
@@ -92,7 +92,7 @@ void CPU::Display::table(Lists::Queue<CPU::Process> processes)
      Serial.println("\n");
 }
 
-void CPU::Display::times(Lists::Queue<CPU::Process> processes)
+void CPU::Display::times(DataStructure::Queue<CPU::Process> processes)
 {
      uint16_t size = processes.size();
 
@@ -138,9 +138,9 @@ void CPU::Display::times(Lists::Queue<CPU::Process> processes)
 }
 
 // Function to display Gantt Chart
-void CPU::Display::gantt(Lists::Queue<CPU::Process> gantt)
+void CPU::Display::gantt(DataStructure::Queue<CPU::Process> gantt)
 {
-     Lists::Queue<CPU::Process> processes = gantt;
+     DataStructure::Queue<CPU::Process> processes = gantt;
 
      Serial.print("Gantt Chart (IS indicates ideal state) :- \n\n+");
 
@@ -197,7 +197,7 @@ void CPU::Display::gantt(Lists::Queue<CPU::Process> gantt)
 
      int temp, prev = 0;
 
-     //For 3rd row of gantt chart
+     // For 3rd row of gantt chart
      while (processes.notEmpty())
      {
           CPU::Process process = processes.pop();
@@ -215,9 +215,9 @@ void CPU::Display::gantt(Lists::Queue<CPU::Process> gantt)
 }
 
 // Preform the Algorithm and display the results
-void CPU::Display::display(void (*algorithm)(Lists::Queue<CPU::Process>, Lists::Queue<CPU::Process> *, Lists::Queue<CPU::Process> *), Lists::Queue<CPU::Process> processes)
+void CPU::Display::display(void (*algorithm)(DataStructure::Queue<CPU::Process>, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> processes)
 {
-     Lists::Queue<CPU::Process> gantt, table;
+     DataStructure::Queue<CPU::Process> gantt, table;
 
      // Preform the scheduling algorithm
      algorithm(processes, &gantt, &table);
