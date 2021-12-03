@@ -6,6 +6,7 @@
         "queue.h": "c",
         "stack.h": "c",
         "list.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "linkedlist.h": "c"
     }
 }

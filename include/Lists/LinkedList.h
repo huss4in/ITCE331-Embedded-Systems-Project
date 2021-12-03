@@ -14,36 +14,36 @@
 
 #include <stddef.h>
 
-template <class T>
+template <class Data>
 struct ListNode
 {
-	T data;
-	ListNode<T> *next;
+	Data data;
+	ListNode<Data> *next;
 };
 
-template <typename T>
+template <typename Data>
 class LinkedList
 {
 
 protected:
 	int _size;
-	ListNode<T> *root;
-	ListNode<T> *last;
+	ListNode<Data> *root;
+	ListNode<Data> *last;
 
 	// Helps "get" method, by saving last position
-	ListNode<T> *lastNodeGot;
+	ListNode<Data> *lastNodeGot;
 	int lastIndexGot;
 	// isCached should be set to FALSE
 	// everytime the list suffer changes
 	bool isCached;
 
-	ListNode<T> *getNode(int index);
+	ListNode<Data> *getNode(int index);
 
-	ListNode<T> *findEndOfSortedString(ListNode<T> *p, int (*cmp)(T &, T &));
+	ListNode<Data> *findEndOfSortedString(ListNode<Data> *p, int (*cmp)(Data &, Data &));
 
 public:
 	LinkedList();
-	LinkedList(int sizeIndex, T _t); //initiate list size and default value
+	LinkedList(int sizeIndex, Data _t); // initiate list size and default value
 	virtual ~LinkedList();
 
 	/*
@@ -55,41 +55,41 @@ public:
 		Unlink and link the LinkedList correcly;
 		Increment _size
 	*/
-	virtual bool add(int index, T);
+	virtual bool add(int index, Data);
 	/*
 		Adds a T object in the end of the LinkedList;
 		Increment _size;
 	*/
-	virtual bool add(T);
+	virtual bool add(Data);
 	/*
 		Adds a T object in the start of the LinkedList;
 		Increment _size;
 	*/
-	virtual bool unshift(T);
+	virtual bool unshift(Data);
 	/*
 		Set the object at index, with T;
 	*/
-	virtual bool set(int index, T);
+	virtual bool set(int index, Data);
 	/*
 		Remove object at index;
 		If index is not reachable, returns false;
 		else, decrement _size
 	*/
-	virtual T remove(int index);
+	virtual Data remove(int index);
 	/*
 		Remove last object;
 	*/
-	virtual T pop();
+	virtual Data pop();
 	/*
 		Remove first object;
 	*/
-	virtual T shift();
+	virtual Data shift();
 	/*
 		Get the index'th element on the list;
 		Return Element if accessible,
 		else, return false;
 	*/
-	virtual T get(int index);
+	virtual Data get(int index);
 
 	/*
 		Clear the entire array
@@ -99,17 +99,17 @@ public:
 	/*
 		Sort the list, given a comparison function
 	*/
-	virtual void sort(int (*cmp)(T &, T &));
+	virtual void sort(int (*cmp)(Data &, Data &));
 
 	// add support to array brakets [] operator
-	inline T &operator[](int index);
-	inline T &operator[](size_t &i) { return this->get(i); }
-	inline const T &operator[](const size_t &i) const { return this->get(i); }
+	inline Data &operator[](int index);
+	inline Data &operator[](size_t &i) { return this->get(i); }
+	inline const Data &operator[](const size_t &i) const { return this->get(i); }
 };
 
 // Initialize LinkedList with false values
-template <typename T>
-LinkedList<T>::LinkedList()
+template <typename Data>
+LinkedList<Data>::LinkedList()
 {
 	root = NULL;
 	last = NULL;
@@ -121,10 +121,10 @@ LinkedList<T>::LinkedList()
 }
 
 // Clear Nodes and free Memory
-template <typename T>
-LinkedList<T>::~LinkedList()
+template <typename Data>
+LinkedList<Data>::~LinkedList()
 {
-	ListNode<T> *tmp;
+	ListNode<Data> *tmp;
 	while (root != NULL)
 	{
 		tmp = root;
@@ -140,12 +140,12 @@ LinkedList<T>::~LinkedList()
 	Actualy "logic" coding
 */
 
-template <typename T>
-ListNode<T> *LinkedList<T>::getNode(int index)
+template <typename Data>
+ListNode<Data> *LinkedList<Data>::getNode(int index)
 {
 
 	int _pos = 0;
-	ListNode<T> *current = root;
+	ListNode<Data> *current = root;
 
 	// Check if the node trying to get is
 	// immediatly AFTER the previous got one
@@ -175,14 +175,14 @@ ListNode<T> *LinkedList<T>::getNode(int index)
 	return NULL;
 }
 
-template <typename T>
-int LinkedList<T>::size()
+template <typename Data>
+int LinkedList<Data>::size()
 {
 	return _size;
 }
 
-template <typename T>
-LinkedList<T>::LinkedList(int sizeIndex, T _t)
+template <typename Data>
+LinkedList<Data>::LinkedList(int sizeIndex, Data _t)
 {
 	for (int i = 0; i < sizeIndex; i++)
 	{
@@ -190,8 +190,8 @@ LinkedList<T>::LinkedList(int sizeIndex, T _t)
 	}
 }
 
-template <typename T>
-bool LinkedList<T>::add(int index, T _t)
+template <typename Data>
+bool LinkedList<Data>::add(int index, Data _t)
 {
 
 	if (index >= _size)
@@ -200,8 +200,8 @@ bool LinkedList<T>::add(int index, T _t)
 	if (index == 0)
 		return unshift(_t);
 
-	ListNode<T> *tmp = new ListNode<T>(),
-				*_prev = getNode(index - 1);
+	ListNode<Data> *tmp = new ListNode<Data>(),
+				   *_prev = getNode(index - 1);
 	tmp->data = _t;
 	tmp->next = _prev->next;
 	_prev->next = tmp;
@@ -212,11 +212,11 @@ bool LinkedList<T>::add(int index, T _t)
 	return true;
 }
 
-template <typename T>
-bool LinkedList<T>::add(T _t)
+template <typename Data>
+bool LinkedList<Data>::add(Data _t)
 {
 
-	ListNode<T> *tmp = new ListNode<T>();
+	ListNode<Data> *tmp = new ListNode<Data>();
 	tmp->data = _t;
 	tmp->next = NULL;
 
@@ -239,14 +239,14 @@ bool LinkedList<T>::add(T _t)
 	return true;
 }
 
-template <typename T>
-bool LinkedList<T>::unshift(T _t)
+template <typename Data>
+bool LinkedList<Data>::unshift(Data _t)
 {
 
 	if (_size == 0)
 		return add(_t);
 
-	ListNode<T> *tmp = new ListNode<T>();
+	ListNode<Data> *tmp = new ListNode<Data>();
 	tmp->next = root;
 	tmp->data = _t;
 	root = tmp;
@@ -257,14 +257,14 @@ bool LinkedList<T>::unshift(T _t)
 	return true;
 }
 
-template <typename T>
-T &LinkedList<T>::operator[](int index)
+template <typename Data>
+Data &LinkedList<Data>::operator[](int index)
 {
 	return getNode(index)->data;
 }
 
-template <typename T>
-bool LinkedList<T>::set(int index, T _t)
+template <typename Data>
+bool LinkedList<Data>::set(int index, Data _t)
 {
 	// Check if index position is in bounds
 	if (index < 0 || index >= _size)
@@ -274,18 +274,18 @@ bool LinkedList<T>::set(int index, T _t)
 	return true;
 }
 
-template <typename T>
-T LinkedList<T>::pop()
+template <typename Data>
+Data LinkedList<Data>::pop()
 {
 	if (_size <= 0)
-		return T();
+		return Data();
 
 	isCached = false;
 
 	if (_size >= 2)
 	{
-		ListNode<T> *tmp = getNode(_size - 2);
-		T ret = tmp->next->data;
+		ListNode<Data> *tmp = getNode(_size - 2);
+		Data ret = tmp->next->data;
 		delete (tmp->next);
 		tmp->next = NULL;
 		last = tmp;
@@ -295,7 +295,7 @@ T LinkedList<T>::pop()
 	else
 	{
 		// Only one element left on the list
-		T ret = root->data;
+		Data ret = root->data;
 		delete (root);
 		root = NULL;
 		last = NULL;
@@ -304,16 +304,16 @@ T LinkedList<T>::pop()
 	}
 }
 
-template <typename T>
-T LinkedList<T>::shift()
+template <typename Data>
+Data LinkedList<Data>::shift()
 {
 	if (_size <= 0)
-		return T();
+		return Data();
 
 	if (_size > 1)
 	{
-		ListNode<T> *_next = root->next;
-		T ret = root->data;
+		ListNode<Data> *_next = root->next;
+		Data ret = root->data;
 		delete (root);
 		root = _next;
 		_size--;
@@ -328,12 +328,12 @@ T LinkedList<T>::shift()
 	}
 }
 
-template <typename T>
-T LinkedList<T>::remove(int index)
+template <typename Data>
+Data LinkedList<Data>::remove(int index)
 {
 	if (index < 0 || index >= _size)
 	{
-		return T();
+		return Data();
 	}
 
 	if (index == 0)
@@ -344,9 +344,9 @@ T LinkedList<T>::remove(int index)
 		return pop();
 	}
 
-	ListNode<T> *tmp = getNode(index - 1);
-	ListNode<T> *toDelete = tmp->next;
-	T ret = toDelete->data;
+	ListNode<Data> *tmp = getNode(index - 1);
+	ListNode<Data> *toDelete = tmp->next;
+	Data ret = toDelete->data;
 	tmp->next = tmp->next->next;
 	delete (toDelete);
 	_size--;
@@ -354,23 +354,23 @@ T LinkedList<T>::remove(int index)
 	return ret;
 }
 
-template <typename T>
-T LinkedList<T>::get(int index)
+template <typename Data>
+Data LinkedList<Data>::get(int index)
 {
-	ListNode<T> *tmp = getNode(index);
+	ListNode<Data> *tmp = getNode(index);
 
-	return (tmp ? tmp->data : T());
+	return (tmp ? tmp->data : Data());
 }
 
-template <typename T>
-void LinkedList<T>::clear()
+template <typename Data>
+void LinkedList<Data>::clear()
 {
 	while (size() > 0)
 		shift();
 }
 
-template <typename T>
-void LinkedList<T>::sort(int (*cmp)(T &, T &))
+template <typename Data>
+void LinkedList<Data>::sort(int (*cmp)(Data &, Data &))
 {
 	if (_size < 2)
 		return; // trivial case;
@@ -378,12 +378,12 @@ void LinkedList<T>::sort(int (*cmp)(T &, T &))
 	for (;;)
 	{
 
-		ListNode<T> **joinPoint = &root;
+		ListNode<Data> **joinPoint = &root;
 
 		while (*joinPoint)
 		{
-			ListNode<T> *a = *joinPoint;
-			ListNode<T> *a_end = findEndOfSortedString(a, cmp);
+			ListNode<Data> *a = *joinPoint;
+			ListNode<Data> *a_end = findEndOfSortedString(a, cmp);
 
 			if (!a_end->next)
 			{
@@ -399,10 +399,10 @@ void LinkedList<T>::sort(int (*cmp)(T &, T &))
 				}
 			}
 
-			ListNode<T> *b = a_end->next;
-			ListNode<T> *b_end = findEndOfSortedString(b, cmp);
+			ListNode<Data> *b = a_end->next;
+			ListNode<Data> *b_end = findEndOfSortedString(b, cmp);
 
-			ListNode<T> *tail = b_end->next;
+			ListNode<Data> *tail = b_end->next;
 
 			a_end->next = NULL;
 			b_end->next = NULL;
@@ -443,8 +443,8 @@ void LinkedList<T>::sort(int (*cmp)(T &, T &))
 	}
 }
 
-template <typename T>
-ListNode<T> *LinkedList<T>::findEndOfSortedString(ListNode<T> *p, int (*cmp)(T &, T &))
+template <typename Data>
+ListNode<Data> *LinkedList<Data>::findEndOfSortedString(ListNode<Data> *p, int (*cmp)(Data &, Data &))
 {
 	while (p->next && cmp(p->data, p->next->data) <= 0)
 	{
