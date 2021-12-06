@@ -154,26 +154,6 @@ Data DataStructure::Queue<Data>::back()
     return this->tail->data;
 }
 
-// Return pointer to head
-template <typename Data>
-Data *DataStructure::Queue<Data>::headPtr()
-{
-    if (this->empty())
-        return nullptr;
-
-    return &(this->head->data);
-}
-
-// Return pointer to tail
-template <typename Data>
-Data *DataStructure::Queue<Data>::tailPtr()
-{
-    if (this->empty())
-        return nullptr;
-
-    return &(this->tail->data);
-}
-
 // print queue header
 template <typename Data>
 void DataStructure::Queue<Data>::printHeader()

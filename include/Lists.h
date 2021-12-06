@@ -4,11 +4,7 @@ private:
     template <typename Data>
     class List
     {
-    protected:
-        uint16_t count;     // Count in items inside the list
-        uint16_t maxItems;  // The max number of items the list can hold
-        uint16_t maxMemory; // The max memory the list can allocate
-
+    public:
         class Node
         {
         public:
@@ -18,36 +14,39 @@ private:
             ~Node();         // Destructor
         };
 
-        Node *head, *tail; // The head and tail of the queue
+    protected:
+        uint16_t count;     // Number of elements in the list.
+        uint16_t maxItems;  // The maximum number of items the list can hold.
+        uint16_t maxMemory; // The maximum memory the list can allocate.
+
+        Node *head, *tail; // The head and tail of the list.
 
     public:
-        // Returns the number of items currently in the queue.
-        uint16_t size() { return this->count; }
+        bool empty() { return this->count == 0; }             // Returns true if the list is empty, false otherwise.
+        bool notEmpty() { return this->count != 0; }          // Returns true if the list is not empty, false otherwise.
+        bool full() { return this->count == this->maxItems; } // Returns true if the list is full, false otherwise.
 
-        // Returns true if the queue is empty, false otherwise.
-        bool empty() { return this->count == 0; }
+        uint16_t size() { return this->count; }              // Returns the number of items currently in the list.
+        uint16_t maxSize() { return this->maxItems; }        // Returns the size of the list (maximum number of items).
+        uint16_t maxMemorySize() { return this->maxMemory; } // Returns the size of the list (maximum size in bytes).
 
-        // Returns true if the queue is not empty, false otherwise.
-        bool notEmpty() { return this->count != 0; }
+        void print() // Print the list.
+        {
+            this->printHeader();
+            this->printItems();
+        }
 
-        // Returns true if the queue is full, false otherwise.
-        bool full() { return this->count == this->maxItems; }
+        virtual void printHeader(); // Print list header.
+        virtual void printItems();  // Print list items.
 
-        // Returns the size of the queue item in bytes.
-        uint16_t itemSize() { return sizeof(Node); }
-
-        // Returns the size of the queue (maximum number of items)
-        uint16_t maxSize() { return this->maxItems; }
-
-        // Returns the size of the queue (maximum size in bytes)
-        uint16_t maxMemorySize() { return this->maxMemory; }
+        virtual uint16_t itemSize() { return sizeof(*this->head); } // Returns the size of the list item in bytes.
     };
 
 public:
     template <typename Data>
     class Queue : public List<Data>
     {
-    private:
+    public:
         class Node
         {
         public:
@@ -58,63 +57,35 @@ public:
             ~Node() { this->next = nullptr; }      // Destructor
         };
 
+    protected:
         Node *head, *tail; // The head and tail of the queue
 
     public:
-        // Constructor
-        Queue(uint16_t maxItems = -1, uint16_t maxMemory = 2048);
+        ~Queue();                                                 // Destructor
+        Queue(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
+        Queue(const Queue &q);                                    // Copy constructor
+        Queue &operator=(const Queue &q);                         // Assignment operator
 
-        // Destructor
-        ~Queue();
+        bool push(Data data);               // Adds item to the queue.
+        Data pop();                         // Pop item from the queue.
+        Data pop_index(uint16_t index = 0); // Pop item at index.
 
-        // Copy Constructor
-        Queue(const Queue &q);
+        Data front(); // First item in the queue.
+        Data back();  // Last item in the queue.
 
-        // Assignment operator
-        Queue &operator=(const Queue &q);
+        Node *headPtr() { return this->head; } // Return pionter to head.
+        Node *tailPtr() { return this->tail; } // Return pionter to tail.
 
-        // Push an data into the queue
-        bool push(Data data);
+        void printHeader(); // Print queue header.
+        void printItems();  // Print queue items.
 
-        // Pop them data in the front of the queue
-        Data pop();
-
-        // Pop and Peturn data ad index
-        Data pop_index(uint16_t index = 0);
-
-        // Get the data in the front of the queue.
-        Data front();
-
-        // Get the data in the back of the queue.
-        Data back();
-
-        // Return pointer to head
-        Data *headPtr();
-
-        // Return pointer to tail
-        Data *tailPtr();
-
-        // print queue
-        void print()
-        {
-            this->printHeader();
-            this->printItems();
-        }
-
-        // print list header
-        void printHeader();
-
-        // print list items
-        void printItems();
-
-        // Returns the size of the queue item in bytes.
-        uint16_t itemSize() { return sizeof(Node); }
+        uint16_t itemSize() { return sizeof(*this->head); } // Returns the size of the queue item in bytes.
     };
 
     template <typename Data>
     class Stack : public List<Data>
     {
-    private:
+    public:
         class Node
         {
         public:
@@ -125,57 +96,29 @@ public:
             ~Node() { this->next = nullptr; }      // Destructor
         };
 
+    protected:
         Node *head, *tail; // The head and tail of the stack
 
     public:
-        // Constructor
-        Stack(uint16_t maxItems = -1, uint16_t maxMemory = 2048);
+        ~Stack();                                                 // Destructor
+        Stack(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
+        Stack(const Stack &stack);                                // Copy constructor
+        Stack &operator=(const Stack &stack);                     // Assignment operator
 
-        // Destructor
-        ~Stack();
+        bool push(Data data);               // Push item onto the stack
+        Data pop();                         // Pop item off the stack
+        Data pop_index(uint16_t index = 0); // Pop item at index
 
-        // Copy Constructor
-        Stack(const Stack &stack);
+        Data front(); // First item in the stack.
+        Data back();  // Last item in the stack.
 
-        // Assignment operator
-        Stack &operator=(const Stack &stack);
+        Node *headPtr() { return this->head; } // Return pionter to head
+        Node *tailPtr() { return this->tail; } // Return pionter to tail
 
-        // Push an data into the stack
-        bool push(Data data);
+        void printHeader(); // Print stack header
+        void printItems();  // Print stack items
 
-        // Pop them data in the front of the stack
-        Data pop();
-
-        // Pop and Peturn data ad index
-        Data pop_index(uint16_t index = 0);
-
-        // Get the data in the front of the stack.
-        Data front();
-
-        // Get the data in the back of the stack.
-        Data back();
-
-        // Return pointer to head
-        Data *headPtr();
-
-        // Return pointer to tail
-        Data *tailPtr();
-
-        // print queue
-        void print()
-        {
-            this->printHeader();
-            this->printItems();
-        }
-
-        // print list header
-        void printHeader();
-
-        // print list items
-        void printItems();
-
-        // Returns the size of the queue item in bytes.
-        uint16_t itemSize() { return sizeof(Node); }
+        uint16_t itemSize() { return sizeof(this->head); } // Returns the size of the stack item in bytes.
     };
 
     template <typename Data>

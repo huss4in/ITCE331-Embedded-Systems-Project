@@ -54,37 +54,20 @@ public:
 
     class Algorithm
     {
-    public:
-        // Fist Come First Served Scheduling Algorithm
-        static void FCFS(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        // Shortest Job First Scheduling Algorithm
-        static void SJF_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        // Shortest Job First (Non-Preemptive) Scheduling Algorithm
-        static void SJF_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        // Longest Job First Scheduling Algorithm
-        static void LJF_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        // Longest Job First (Non-Preemptive) Scheduling Algorithm
-        static void LJF_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        // Round Robin Scheduling Algorithm
-        static void RR(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void RR(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, int rr_time_slice);
-        // Priority Preemptive Scheduling Algorithm
-        static void P_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void P_P(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, bool high);
-        // Priority Non-Preemptive Scheduling Algorithm
-        static void P_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void P_NP(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table, bool high);
-        // Highest Response Ratio Next Scheduling Algorithm
-        static void HRRN(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+    private:
+        static uint8_t ROUND_ROBIN_QUANTUM;
+        static bool PRIORITY_HIGH;
 
-        // Get total completion time of the processes
-        static double get_total_completion_time(DataStructure::Queue<CPU::Process> processes);
-        // Get total waiting time of the processes
-        static double get_total_waiting_time(DataStructure::Queue<CPU::Process> processes);
-        // Get total turnaround time of the processes
-        static double get_total_turnaround_time(DataStructure::Queue<CPU::Process> processes);
-        // Get total response time of the processes
-        static double get_total_reponse_time(DataStructure::Queue<CPU::Process> processes);
+    public:
+        static void Fist_Come_First_Served(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Shortest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Longest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Longest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Round_Robin(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Priority(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Priority_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
     };
 
     class Display
@@ -94,22 +77,18 @@ public:
 
         static void printCol(int attr, uint8_t left, uint8_t right);
 
-        static void printLine(bool p);
+        static void printLine();
 
     public:
-        // return number of digits
-        static int countDigit(int n);
+        static void table(DataStructure::Queue<CPU::Process> *processes);
+        static void times(DataStructure::Queue<CPU::Process> *processes);
+        static void gantt(DataStructure::Queue<CPU::Process> *gantt);
 
-        // Function to display Completion Queue and all the time
-        static void table(DataStructure::Queue<CPU::Process> processes);
-        // Function to display times
-        static void times(DataStructure::Queue<CPU::Process> processes);
-        // Function to display Gantt Chart
-        static void gantt(DataStructure::Queue<CPU::Process> gantt);
-
-        // Preform the Algorithm and display the results
-        static void display(void (*algorithm)(DataStructure::Queue<CPU::Process>, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> processes);
+        static void display(void (*algorithm)(DataStructure::Queue<CPU::Process>, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> *processes);
     };
+
+    static uint16_t countDigit(uint16_t n);
+    static void get_times(DataStructure::Queue<CPU::Process> *processes, double *completion_time, double *turnaround_time, double *waiting_time, double *response_time);
 };
 
 #include "CPU/Process.h"

@@ -157,26 +157,6 @@ Data DataStructure::Stack<Data>::back()
     return this->tail->data;
 }
 
-// Return pointer to head
-template <typename Data>
-Data *DataStructure::Stack<Data>::headPtr()
-{
-    if (this->empty())
-        return nullptr;
-
-    return &(this->head->data);
-}
-
-// Return pointer to tail
-template <typename Data>
-Data *DataStructure::Stack<Data>::tailPtr()
-{
-    if (this->empty())
-        return nullptr;
-
-    return &(this->tail->data);
-}
-
 // print stack header
 template <typename Data>
 void DataStructure::Stack<Data>::printHeader()
