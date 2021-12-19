@@ -17,6 +17,14 @@ DataStructure::SingleLinkedList<Data>::SingleLinkedList(uint16_t maxItems, uint1
 template <typename Data>
 DataStructure::SingleLinkedList<Data>::SingleLinkedList(const SingleLinkedList &list)
 {
+    // Use the assignment operator
+    *this = list;
+}
+
+// Assignment operator
+template <typename Data>
+DataStructure::SingleLinkedList<Data> &DataStructure::SingleLinkedList<Data>::operator=(const SingleLinkedList &list)
+{
     this->count = 0;
 
     this->head = nullptr, this->tail = nullptr;
@@ -26,6 +34,8 @@ DataStructure::SingleLinkedList<Data>::SingleLinkedList(const SingleLinkedList &
 
     for (Node *node = list.head; node != nullptr; node = node->next)
         this->push(node->data);
+
+    return *this;
 }
 
 // Destructor

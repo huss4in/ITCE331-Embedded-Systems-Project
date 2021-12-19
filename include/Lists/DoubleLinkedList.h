@@ -17,6 +17,14 @@ DataStructure::DoubleLinkedList<Data>::DoubleLinkedList(uint16_t maxItems, uint1
 template <typename Data>
 DataStructure::DoubleLinkedList<Data>::DoubleLinkedList(const DoubleLinkedList &list)
 {
+    // Use the assignment operator
+    *this = list;
+}
+
+// Assignment operator
+template <typename Data>
+DataStructure::DoubleLinkedList<Data> &DataStructure::DoubleLinkedList<Data>::operator=(const DoubleLinkedList &list)
+{
     this->count = 0;
 
     this->head = nullptr, this->tail = nullptr;
@@ -26,6 +34,8 @@ DataStructure::DoubleLinkedList<Data>::DoubleLinkedList(const DoubleLinkedList &
 
     for (Node *node = list.head; node != nullptr; node = node->next)
         this->push(node->data);
+
+    return *this;
 }
 
 // Destructor

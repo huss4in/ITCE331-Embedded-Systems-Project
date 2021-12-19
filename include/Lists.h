@@ -81,6 +81,7 @@ private:
 
         SingleLinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
         SingleLinkedList(const SingleLinkedList &list);                      // Copy constructor
+        SingleLinkedList &operator=(const SingleLinkedList &list);           // Assignment operator
         ~SingleLinkedList();                                                 // Destructor
 
         Data front(); // First item in the list.
@@ -113,6 +114,7 @@ private:
 
         DoubleLinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
         DoubleLinkedList(const DoubleLinkedList &list);                      // Copy constructor
+        DoubleLinkedList &operator=(const DoubleLinkedList &list);           // Assignment operator
         ~DoubleLinkedList();                                                 // Destructor
 
         Data front(); // First item in the list.
