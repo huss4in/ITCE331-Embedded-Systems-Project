@@ -7,6 +7,9 @@ void setup()
 {
     // Begin Serial Communication
     Serial.begin(115200);
+
+    // Wait 0.5s for the Serial Monitor to initialize
+    delay(500);
 }
 
 void loop()

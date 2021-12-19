@@ -38,6 +38,7 @@ void Test_Fist_Come_First_Served()
     // Preform the Algorithm and display the results
     CPU::Display::display(CPU::Algorithm::Fist_Come_First_Served, &processes);
 }
+
 // ? Test Shortest Job First
 void Test_Shortest_Job_First()
 {
@@ -116,9 +117,9 @@ void setup()
     // RUN_TEST(Test_Longest_Job_First);
     // RUN_TEST(Test_Longest_Job_First_Primitive);
     RUN_TEST(Test_Round_Robin);
-    // RUN_TEST(Test_Priority);
-    // RUN_TEST(Test_Priority_Primitive);
-    // RUN_TEST(Test_Highest_Response_Ratio_Next);
+    RUN_TEST(Test_Priority);
+    RUN_TEST(Test_Priority_Primitive);
+    RUN_TEST(Test_Highest_Response_Ratio_Next);
 
     UNITY_END(); // End unity testing
 }

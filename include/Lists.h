@@ -4,31 +4,52 @@ private:
     template <typename Data>
     class List
     {
-    public:
-        class Node
-        {
-        public:
-            Data data; // Data
-
-            Node(Data data); // Constructor
-            ~Node();         // Destructor
-        };
-
     protected:
         uint16_t count;     // Number of elements in the list.
         uint16_t maxItems;  // The maximum number of items the list can hold.
         uint16_t maxMemory; // The maximum memory the list can allocate.
 
-        Node *head, *tail; // The head and tail of the list.
+        class Node
+        {
+        public:
+            Data data; // Data
+
+            Node(Data data) { this->data = data; } // Constructor
+        };
+
+        void listHeader()
+        {
+            Serial.print(this->itemSize());
+            Serial.print(" bytes / ");
+
+            Serial.print(this->maxMemorySize());
+            Serial.print(" max bytes = ");
+
+            Serial.print(this->maxItemsCount());
+            Serial.print(" max items ");
+
+            Serial.print("| Size ");
+            Serial.print(this->size());
+
+            Serial.println("\n---");
+        }
 
     public:
-        bool empty() { return this->count == 0; }             // Returns true if the list is empty, false otherwise.
-        bool notEmpty() { return this->count != 0; }          // Returns true if the list is not empty, false otherwise.
-        bool full() { return this->count == this->maxItems; } // Returns true if the list is full, false otherwise.
+        virtual bool empty() { return this->count == 0; }             // Return true if the list is empty.
+        virtual bool notEmpty() { return !this->empty(); }            // Return true if the list is not empty.
+        virtual bool full() { return this->count == this->maxItems; } // Return true if the list is full.
 
-        uint16_t size() { return this->count; }              // Returns the number of items currently in the list.
-        uint16_t maxSize() { return this->maxItems; }        // Returns the size of the list (maximum number of items).
-        uint16_t maxMemorySize() { return this->maxMemory; } // Returns the size of the list (maximum size in bytes).
+        virtual uint16_t size() { return this->count; }              // Return the number of items in the list.
+        virtual uint16_t maxItemsCount() { return this->maxItems; }  // Return the maximum number of items the list can hold.
+        virtual uint16_t maxMemorySize() { return this->maxMemory; } // Return the maximum memory the list can allocate.
+
+        virtual uint16_t itemSize(); // Returns the size of the list item in bytes.
+
+        virtual bool push(Data data);         // Push item to the list.
+        virtual Data pop(uint16_t index = 0); // Pop item from the list.
+
+        virtual Data front(); // First item in the list.
+        virtual Data back();  // Last item in the list.
 
         void print() // Print the list.
         {
@@ -36,99 +57,115 @@ private:
             this->printItems();
         }
 
+        virtual void printItems();  // Print list items.
+        virtual void printHeader(); // Print list header.
+    };
+
+    template <typename Data>
+    class SingleLinkedList : public List<Data>
+    {
+    public:
+        class Node : public List<Data>::Node
+        {
+        public:
+            Node *next; // Next node.
+
+            Node(Data data) : List<Data>::Node(data) { this->next = nullptr; } // Constructor.
+            ~Node() { this->next = nullptr; }                                  // Destructor.
+        };
+
+        Node *head, *tail; // Pointer to the head and tail of the list.
+
+    public:
+        uint16_t itemSize() { return sizeof(Node); } // Returns the size of the list item in bytes.
+
+        SingleLinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
+        SingleLinkedList(const SingleLinkedList &list);                      // Copy constructor
+        ~SingleLinkedList();                                                 // Destructor
+
+        Data front(); // First item in the list.
+        Data back();  // Last item in the list.
+
+        virtual bool push(Data data);         // Push item to the list.
+        virtual Data pop(uint16_t index = 0); // Pop item from the list.
+
         virtual void printHeader(); // Print list header.
         virtual void printItems();  // Print list items.
+    };
 
-        virtual uint16_t itemSize() { return sizeof(*this->head); } // Returns the size of the list item in bytes.
+    template <typename Data>
+    class DoubleLinkedList : public List<Data>
+    {
+    public:
+        class Node : public List<Data>::Node
+        {
+        public:
+            Node *next, *prev; // Next and Previous nodes.
+
+            Node(Data data) : List<Data>::Node(data) { this->next = nullptr, this->prev = nullptr; } // Constructor.
+            ~Node() { this->next = nullptr, this->prev = nullptr; }                                  // Destructor.
+        };
+
+        Node *head, *tail; // Pointer to the head and tail of the list.
+
+    public:
+        uint16_t itemSize() { return sizeof(Node); } // Returns the size of the list item in bytes.
+
+        DoubleLinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
+        DoubleLinkedList(const DoubleLinkedList &list);                      // Copy constructor
+        ~DoubleLinkedList();                                                 // Destructor
+
+        Data front(); // First item in the list.
+        Data back();  // Last item in the list.
+
+        virtual bool push(Data data);         // Push item to the list.
+        virtual Data pop(uint16_t index = 0); // Pop item from the list.
+
+        virtual void printHeader(); // Print list header.
+        virtual void printItems();  // Print list items.
     };
 
 public:
     template <typename Data>
-    class Queue : public List<Data>
+    class Queue : public SingleLinkedList<Data>
     {
     public:
-        class Node
-        {
-        public:
-            Data data;            // data
-            Node *next = nullptr; // next node
+        Queue(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : SingleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
+        Queue(const Queue &queue) : SingleLinkedList<Data>(queue) {}                                              // Inherit copy constructor.
 
-            Node(Data data) { this->data = data; } // Constructor
-            ~Node() { this->next = nullptr; }      // Destructor
-        };
+        bool push(Data data); // Push item to the queue.
 
-    protected:
-        Node *head, *tail; // The head and tail of the queue
-
-    public:
-        ~Queue();                                                 // Destructor
-        Queue(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
-        Queue(const Queue &q);                                    // Copy constructor
-        Queue &operator=(const Queue &q);                         // Assignment operator
-
-        bool push(Data data);               // Adds item to the queue.
-        Data pop();                         // Pop item from the queue.
-        Data pop_index(uint16_t index = 0); // Pop item at index.
-
-        Data front(); // First item in the queue.
-        Data back();  // Last item in the queue.
-
-        Node *headPtr() { return this->head; } // Return pionter to head.
-        Node *tailPtr() { return this->tail; } // Return pionter to tail.
-
-        void printHeader(); // Print queue header.
-        void printItems();  // Print queue items.
-
-        uint16_t itemSize() { return sizeof(*this->head); } // Returns the size of the queue item in bytes.
+        void printHeader(); // Print list header.
     };
 
     template <typename Data>
-    class Stack : public List<Data>
+    class Stack : public SingleLinkedList<Data>
     {
     public:
-        class Node
-        {
-        public:
-            Data data;            // data
-            Node *next = nullptr; // next node
+        Stack(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : SingleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
+        Stack(const Stack &stack) : SingleLinkedList<Data>(stack) {}                                              // Inherit copy constructor.
 
-            Node(Data data) { this->data = data; } // Constructor
-            ~Node() { this->next = nullptr; }      // Destructor
-        };
+        bool push(Data data); // Push item to the stack.
 
-    protected:
-        Node *head, *tail; // The head and tail of the stack
-
-    public:
-        ~Stack();                                                 // Destructor
-        Stack(uint16_t maxItems = -1, uint16_t maxMemory = 1024); // Constructor
-        Stack(const Stack &stack);                                // Copy constructor
-        Stack &operator=(const Stack &stack);                     // Assignment operator
-
-        bool push(Data data);               // Push item onto the stack
-        Data pop();                         // Pop item off the stack
-        Data pop_index(uint16_t index = 0); // Pop item at index
-
-        Data front(); // First item in the stack.
-        Data back();  // Last item in the stack.
-
-        Node *headPtr() { return this->head; } // Return pionter to head
-        Node *tailPtr() { return this->tail; } // Return pionter to tail
-
-        void printHeader(); // Print stack header
-        void printItems();  // Print stack items
-
-        uint16_t itemSize() { return sizeof(this->head); } // Returns the size of the stack item in bytes.
+        void printHeader(); // Print list header.
     };
 
     template <typename Data>
-    class LinkedList : public List<Data>
+    class LinkedList : public DoubleLinkedList<Data>
     {
+    public:
+        LinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : DoubleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
+        LinkedList(const LinkedList &list) : DoubleLinkedList<Data>(list) {}                                           // Inherit copy constructor.
+
+        // bool push(Data data);         // Push item to the list.
+        // Data pop(uint16_t index = 0); // Pop item from the list.
+
+        void printHeader(); // Print list header.
     };
 };
 
-#include "Lists/Queue.h"
-
-#include "Lists/Stack.h"
-
+#include "Lists/SingleLinkedList.h"
+#include "Lists/DoubleLinkedList.h"
 #include "Lists/LinkedList.h"
+#include "Lists/Queue.h"
+#include "Lists/Stack.h"
