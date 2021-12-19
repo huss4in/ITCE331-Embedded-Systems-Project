@@ -30,7 +30,7 @@ void loop()
     processes.print();
 
     // Preform the Algorithm and display the results
-    CPU::Display::display(CPU::Algorithm::Fist_Come_First_Served, &processes);
+    CPU::Display::display(CPU::Algorithm::Shortest_Job_First, &processes);
 
     while (true)
         ;

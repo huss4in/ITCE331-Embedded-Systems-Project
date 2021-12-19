@@ -2,15 +2,15 @@ uint8_t CPU::Algorithm::ROUND_ROBIN_QUANTUM = 2;
 bool CPU::Algorithm::PRIORITY_HIGH = false;
 
 // Fist Come First Served Scheduling Algorithm
-void CPU::Algorithm::Fist_Come_First_Served(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Fist_Come_First_Served(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int time = 0;
 
-    while (processes.notEmpty())
+    while (processes->notEmpty())
     {
         CPU::Process process = CPU::Process();
 
-        while (time < processes.front().arrival_time)
+        while (time < processes->front().arrival_time)
             time++, process.temp_burst_time++;
 
         if (process.temp_burst_time > 0)
@@ -20,7 +20,7 @@ void CPU::Algorithm::Fist_Come_First_Served(DataStructure::Queue<CPU::Process> p
             gantt->push(process);
         }
 
-        process = processes.pop();
+        process = processes->pop();
 
         process.set_response_time(time);
 
@@ -44,15 +44,15 @@ void CPU::Algorithm::Fist_Come_First_Served(DataStructure::Queue<CPU::Process> p
 }
 
 // Shortest Job First (Non-Preemptive) Scheduling Algorithm
-void CPU::Algorithm::Shortest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Shortest_Job_First(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
     CPU::Process process;
 
-    while (!processes.empty())
+    while (!processes->empty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -64,7 +64,7 @@ void CPU::Algorithm::Shortest_Job_First(DataStructure::Queue<CPU::Process> proce
             gantt->push(process);
         }
 
-        process = CPU::Process::pop_index(&processes, CPU::Process::min_BT_index(processes, clock));
+        process = CPU::Process::pop_index(processes, CPU::Process::min_BT_index(*processes, clock));
         process.set_response_time(clock);
         while (process.burst_time_left > 0)
         {
@@ -80,15 +80,15 @@ void CPU::Algorithm::Shortest_Job_First(DataStructure::Queue<CPU::Process> proce
 }
 
 // Shortest Job First Scheduling Algorithm
-void CPU::Algorithm::Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
     CPU::Process process;
 
-    while (!processes.empty())
+    while (!processes->empty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -101,12 +101,12 @@ void CPU::Algorithm::Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Proc
             gantt->push(process);
         }
 
-        process = CPU::Process::pop_index(&processes, CPU::Process::min_BT_index(processes, clock));
+        process = CPU::Process::pop_index(processes, CPU::Process::min_BT_index(*processes, clock));
 
         if (process.arrival_time == process.initial_arrival_time)
             process.set_response_time(clock);
 
-        while (process.burst_time_left > 0 && (processes.empty() || clock < processes.front().arrival_time || process.burst_time_left <= CPU::Process::min_BT(processes, clock)))
+        while (process.burst_time_left > 0 && (processes->empty() || clock < processes->front().arrival_time || process.burst_time_left <= CPU::Process::min_BT(*processes, clock)))
         {
             process.burst_time_left--;
             process.temp_burst_time++;
@@ -127,20 +127,20 @@ void CPU::Algorithm::Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Proc
             process.completion_time = clock;
             gantt->push(process);
             process.temp_burst_time = 0;
-            processes.push(process);
+            processes->push(process);
         }
     }
 }
 
 // Longest Job First (Non-Preemptive) Scheduling Algorithm
-void CPU::Algorithm::Longest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Longest_Job_First(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
     CPU::Process process;
 
-    while (!processes.empty())
+    while (!processes->empty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -151,7 +151,7 @@ void CPU::Algorithm::Longest_Job_First(DataStructure::Queue<CPU::Process> proces
             process.set_completion_time(clock);
             gantt->push(process);
         }
-        process = CPU::Process::pop_index(&processes, CPU::Process::max_BT_index(processes, clock));
+        process = CPU::Process::pop_index(processes, CPU::Process::max_BT_index(*processes, clock));
         process.set_response_time(clock);
         while (process.burst_time_left > 0)
         {
@@ -167,15 +167,15 @@ void CPU::Algorithm::Longest_Job_First(DataStructure::Queue<CPU::Process> proces
 }
 
 // Longest Job First Scheduling Algorithm
-void CPU::Algorithm::Longest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Longest_Job_First_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
     CPU::Process process;
 
-    while (!processes.empty())
+    while (!processes->empty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -186,11 +186,11 @@ void CPU::Algorithm::Longest_Job_First_Primitive(DataStructure::Queue<CPU::Proce
             process.completion_time = clock;
             gantt->push(process);
         }
-        process = CPU::Process::pop_index(&processes, CPU::Process::max_BT_index(processes, clock));
+        process = CPU::Process::pop_index(processes, CPU::Process::max_BT_index(*processes, clock));
         if (process.arrival_time == process.initial_arrival_time)
             process.set_response_time(clock);
 
-        while (process.burst_time_left > 0 && (processes.empty() || clock < processes.front().arrival_time || process.burst_time_left >= CPU::Process::max_BT(processes, clock)))
+        while (process.burst_time_left > 0 && (processes->empty() || clock < processes->front().arrival_time || process.burst_time_left >= CPU::Process::max_BT(*processes, clock)))
         {
             process.temp_burst_time++;
             process.burst_time_left--;
@@ -210,21 +210,21 @@ void CPU::Algorithm::Longest_Job_First_Primitive(DataStructure::Queue<CPU::Proce
             process.completion_time = clock;
             gantt->push(process);
             process.temp_burst_time = 0;
-            processes.push(process);
+            processes->push(process);
         }
     }
 }
 
 // Round Robin Scheduling Algorithm
-void CPU::Algorithm::Round_Robin(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Round_Robin(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
     CPU::Process process;
 
-    while (processes.notEmpty())
+    while (processes->notEmpty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -235,12 +235,12 @@ void CPU::Algorithm::Round_Robin(DataStructure::Queue<CPU::Process> processes, D
             process.completion_time = clock;
             gantt->push(process);
         }
-        process = processes.pop();
+        process = processes->pop();
 
         if (process.arrival_time == process.initial_arrival_time)
             process.set_response_time(clock);
 
-        while (process.burst_time_left > 0 && (process.temp_burst_time < ROUND_ROBIN_QUANTUM || processes.empty() || clock < processes.front().arrival_time))
+        while (process.burst_time_left > 0 && (process.temp_burst_time < ROUND_ROBIN_QUANTUM || processes->empty() || clock < processes->front().arrival_time))
         {
             process.temp_burst_time++;
             process.burst_time_left--;
@@ -263,13 +263,13 @@ void CPU::Algorithm::Round_Robin(DataStructure::Queue<CPU::Process> processes, D
             gantt->push(process);
 
             process.temp_burst_time = 0;
-            processes.push(process);
+            processes->push(process);
         }
     }
 }
 
 // Priority Non-Preemptive Scheduling Algorithm
-void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -277,9 +277,9 @@ void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, Data
 
     if (PRIORITY_HIGH == 1)
     {
-        while (!processes.empty())
+        while (!processes->empty())
         {
-            while (clock < processes.front().arrival_time)
+            while (clock < processes->front().arrival_time)
             {
                 process.temp_burst_time++;
                 clock++;
@@ -290,7 +290,7 @@ void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, Data
                 process.completion_time = clock;
                 gantt->push(process);
             }
-            process = CPU::Process::pop_index(&processes, CPU::Process::max_priority_index(processes, clock, PRIORITY_HIGH));
+            process = CPU::Process::pop_index(processes, CPU::Process::max_priority_index(*processes, clock, PRIORITY_HIGH));
             process.set_response_time(clock);
 
             while (process.burst_time_left > 0)
@@ -308,9 +308,9 @@ void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, Data
     }
     else
     {
-        while (!processes.empty())
+        while (!processes->empty())
         {
-            while (clock < processes.front().arrival_time)
+            while (clock < processes->front().arrival_time)
             {
                 process.temp_burst_time++;
                 clock++;
@@ -321,7 +321,7 @@ void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, Data
                 process.completion_time = clock;
                 gantt->push(process);
             }
-            process = CPU::Process::pop_index(&processes, CPU::Process::max_priority_index(processes, clock, PRIORITY_HIGH));
+            process = CPU::Process::pop_index(processes, CPU::Process::max_priority_index(*processes, clock, PRIORITY_HIGH));
             process.set_response_time(clock);
 
             while (process.burst_time_left > 0)
@@ -340,7 +340,7 @@ void CPU::Algorithm::Priority(DataStructure::Queue<CPU::Process> processes, Data
 }
 
 // Priority Preemptive Scheduling Algorithm
-void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
@@ -348,9 +348,9 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
 
     if (PRIORITY_HIGH == 1)
     {
-        while (!processes.empty())
+        while (!processes->empty())
         {
-            while (clock < processes.front().arrival_time)
+            while (clock < processes->front().arrival_time)
             {
                 process.temp_burst_time++;
                 clock++;
@@ -361,10 +361,10 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
                 process.completion_time = clock;
                 gantt->push(process);
             }
-            process = CPU::Process::pop_index(&processes, CPU::Process::max_priority_index(processes, clock, PRIORITY_HIGH));
+            process = CPU::Process::pop_index(processes, CPU::Process::max_priority_index(*processes, clock, PRIORITY_HIGH));
             if (process.arrival_time == process.initial_arrival_time)
                 process.set_response_time(clock);
-            while (process.burst_time_left > 0 && (processes.empty() || clock < processes.front().arrival_time || process.priority >= CPU::Process::max_priority(processes, clock, PRIORITY_HIGH)))
+            while (process.burst_time_left > 0 && (processes->empty() || clock < processes->front().arrival_time || process.priority >= CPU::Process::max_priority(*processes, clock, PRIORITY_HIGH)))
             {
                 process.temp_burst_time++;
                 process.burst_time_left--;
@@ -384,15 +384,15 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
                 process.completion_time = clock;
                 gantt->push(process);
                 process.temp_burst_time = 0;
-                processes.push(process);
+                processes->push(process);
             }
         }
     }
     else
     {
-        while (!processes.empty())
+        while (!processes->empty())
         {
-            while (clock < processes.front().arrival_time)
+            while (clock < processes->front().arrival_time)
             {
                 process.temp_burst_time++;
                 clock++;
@@ -403,12 +403,12 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
                 process.completion_time = clock;
                 gantt->push(process);
             }
-            process = CPU::Process::pop_index(&processes, CPU::Process::max_priority_index(processes, clock, PRIORITY_HIGH));
+            process = CPU::Process::pop_index(processes, CPU::Process::max_priority_index(*processes, clock, PRIORITY_HIGH));
 
             if (process.arrival_time == process.initial_arrival_time)
                 process.set_response_time(clock);
 
-            while (process.burst_time_left > 0 && (processes.empty() || clock < processes.front().arrival_time || process.priority <= CPU::Process::max_priority(processes, clock, PRIORITY_HIGH)))
+            while (process.burst_time_left > 0 && (processes->empty() || clock < processes->front().arrival_time || process.priority <= CPU::Process::max_priority(*processes, clock, PRIORITY_HIGH)))
             {
                 process.temp_burst_time++;
                 process.burst_time_left--;
@@ -428,7 +428,7 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
                 process.completion_time = clock;
                 gantt->push(process);
                 process.temp_burst_time = 0;
-                processes.push(process);
+                processes->push(process);
             }
         }
     }
@@ -437,15 +437,15 @@ void CPU::Algorithm::Priority_Primitive(DataStructure::Queue<CPU::Process> proce
 }
 
 // Highest Response Ratio Next Scheduling Algorithm
-void CPU::Algorithm::Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
+void CPU::Algorithm::Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table)
 {
     int clock = 0;
 
     CPU::Process process;
 
-    while (!processes.empty())
+    while (!processes->empty())
     {
-        while (clock < processes.front().arrival_time)
+        while (clock < processes->front().arrival_time)
         {
             process.temp_burst_time++;
             clock++;
@@ -456,7 +456,7 @@ void CPU::Algorithm::Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Proce
             process.completion_time = clock;
             gantt->push(process);
         }
-        process = CPU::Process::pop_index(&processes, CPU::Process::max_response_ratio_index(processes, clock));
+        process = CPU::Process::pop_index(processes, CPU::Process::max_response_ratio_index(*processes, clock));
         process.set_response_time(clock);
 
         while (process.burst_time_left > 0)

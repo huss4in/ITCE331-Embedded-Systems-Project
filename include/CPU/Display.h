@@ -91,7 +91,7 @@ void CPU::Display::table(DataStructure::Queue<CPU::Process> *processes)
 
      printLine();
 
-     Serial.println("\n\n");
+     Serial.println("\n");
 }
 
 void CPU::Display::times(DataStructure::Queue<CPU::Process> *processes)
@@ -208,12 +208,12 @@ void CPU::Display::gantt(DataStructure::Queue<CPU::Process> *gantt)
 }
 
 // Preform the Algorithm and display the results
-void CPU::Display::display(void (*algorithm)(DataStructure::Queue<CPU::Process>, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> *processes)
+void CPU::Display::display(void (*algorithm)(DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> *processes)
 {
      DataStructure::Queue<CPU::Process> gantt, table;
 
      // Preform the scheduling algorithm
-     algorithm(*processes, &gantt, &table);
+     algorithm(processes, &gantt, &table);
 
      // Display gantt chart
      Display::gantt(&gantt);

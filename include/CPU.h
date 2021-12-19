@@ -59,15 +59,15 @@ public:
         static bool PRIORITY_HIGH;
 
     public:
-        static void Fist_Come_First_Served(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Shortest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Longest_Job_First(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Longest_Job_First_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Round_Robin(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Priority(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Priority_Primitive(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
-        static void Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Process> processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Fist_Come_First_Served(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Shortest_Job_First(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Shortest_Job_First_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Longest_Job_First(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Longest_Job_First_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Round_Robin(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Priority(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Priority_Primitive(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
+        static void Highest_Response_Ratio_Next(DataStructure::Queue<CPU::Process> *processes, DataStructure::Queue<CPU::Process> *gantt, DataStructure::Queue<CPU::Process> *table);
     };
 
     class Display
@@ -84,7 +84,7 @@ public:
         static void times(DataStructure::Queue<CPU::Process> *processes);
         static void gantt(DataStructure::Queue<CPU::Process> *gantt);
 
-        static void display(void (*algorithm)(DataStructure::Queue<CPU::Process>, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> *processes);
+        static void display(void (*algorithm)(DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *, DataStructure::Queue<CPU::Process> *), DataStructure::Queue<CPU::Process> *processes);
     };
 
     static uint16_t countDigit(uint16_t n);
