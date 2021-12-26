@@ -9,7 +9,7 @@ DataStructure::DoubleLinkedList<Data>::DoubleLinkedList(uint16_t maxItems, uint1
     this->maxMemory = maxMemory;
     this->maxItems = maxMemory / sizeof(Node);
 
-    if (maxItems > 0 && this->maxItems > maxItems)
+    if (this->maxItems > maxItems)
         this->maxItems = maxItems;
 }
 
@@ -42,6 +42,8 @@ DataStructure::DoubleLinkedList<Data> &DataStructure::DoubleLinkedList<Data>::op
 template <typename Data>
 DataStructure::DoubleLinkedList<Data>::~DoubleLinkedList()
 {
+    this->tail->next = nullptr;
+
     for (Node *node = this->head; node != nullptr; node = this->head)
     {
         this->head = node->next;
@@ -82,18 +84,18 @@ Data DataStructure::DoubleLinkedList<Data>::pop(uint16_t index)
 
     Node *target = this->head;
 
-    this->count--;
-
     if (index == 0)
     {
         this->head = head->next;
 
-        if (this->empty())
+        if (this->head != nullptr)
+            this->head->prev = nullptr;
+        else
             this->tail = nullptr;
     }
-    else // H: 1 -> 2 -> 3 -> 4 :T
+    else
     {
-        Node *ptr = target;
+        Node *ptr = this->head;
 
         for (uint16_t i = 0; i < index - 1; i++)
             ptr = ptr->next;
@@ -102,9 +104,13 @@ Data DataStructure::DoubleLinkedList<Data>::pop(uint16_t index)
 
         ptr->next = target->next;
 
-        if (target == this->tail)
+        if (target->next != nullptr)
+            target->next->prev = ptr;
+        else
             this->tail = ptr;
     }
+
+    this->count--;
 
     Data data = target->data;
 

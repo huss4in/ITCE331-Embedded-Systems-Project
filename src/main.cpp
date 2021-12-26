@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "Lists.h"
+#include "DataStructure.h"
 #include "CPU.h"
 
 void setup()
@@ -29,8 +29,11 @@ void loop()
     // Print the processes
     processes.print();
 
+    // Set the quantum time or Round Robin algorithm to 2 units
+    CPU::Algorithm::ROUND_ROBIN_QUANTUM = 2;
+
     // Preform the Algorithm and display the results
-    CPU::Display::display(CPU::Algorithm::Shortest_Job_First, &processes);
+    CPU::Display::display(CPU::Algorithm::Round_Robin, &processes);
 
     while (true)
         ;

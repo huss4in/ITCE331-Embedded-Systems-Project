@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "Lists.h"
+#include "DataStructure.h"
 
-// #define VERBOSE true
+#define VERBOSE true
 
-#define SIZE 5
+#define SIZE 10
 
 // * Push help function
 void populate_stack(DataStructure::Stack<int> *stack)
@@ -171,6 +171,114 @@ void test_stack_node_size()
     TEST_ASSERT_EQUAL(sizeof(uint32_t) + sizeof(int), s2.itemSize());
 }
 
+// ? Test Stack Copy Constructor
+void test_stack_copy_constructor()
+{
+    DataStructure::Stack<int> stack = DataStructure::Stack<int>(SIZE);
+
+    populate_stack(&stack);
+
+    DataStructure::Stack<int> stack2 = stack;
+
+#if VERBOSE
+    stack2.print();
+#endif
+
+    TEST_ASSERT_EQUAL(stack.size(), stack2.size());
+    TEST_ASSERT_EQUAL(stack.front(), stack2.front());
+    TEST_ASSERT_EQUAL(stack.back(), stack2.back());
+};
+
+// ? Test Stack times of function
+void test_stack_times()
+{
+    unsigned long start, end;
+
+    Serial.println("Tessing Stack APIs times...");
+    Serial.println("---");
+
+    start = micros();
+
+    DataStructure::Stack<int> stack = DataStructure::Stack<int>(SIZE);
+
+    end = micros();
+
+    Serial.println("Stack Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        stack.push(i);
+
+    end = micros();
+
+    Serial.println("Stack.push(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        stack.pop(i);
+
+    end = micros();
+
+    Serial.println("Stack.pop(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    stack.front();
+
+    end = micros();
+
+    Serial.println("Stack.front(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    stack.back();
+
+    end = micros();
+
+    Serial.println("Stack.back(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    stack.size();
+
+    end = micros();
+
+    Serial.println("Stack.size(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    stack.empty();
+
+    end = micros();
+
+    Serial.println("Stack.empty(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    stack.full();
+
+    end = micros();
+
+    Serial.println("Stack.full(): " + String(end - start) + " microseconds" + "\n---");
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        stack.push(i);
+
+    start = micros();
+
+    DataStructure::Stack<int> s2 = stack;
+
+    end = micros();
+
+    Serial.println("Stack Copy Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    Serial.println("Stack Memory Usage: \n---");
+
+    s2.print();
+};
+
 void setup()
 {
     UNITY_BEGIN(); // Begin unity testing
@@ -187,6 +295,10 @@ void setup()
     RUN_TEST(test_stack_pop_end);
 
     RUN_TEST(test_stack_node_size);
+
+    RUN_TEST(test_stack_copy_constructor);
+
+    RUN_TEST(test_stack_times);
 
     UNITY_END(); // End unity testing
 }

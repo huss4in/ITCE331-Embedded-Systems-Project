@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "Lists.h"
+#include "DataStructure.h"
 
-// #define VERBOSE true
+#define VERBOSE true
 
 #define SIZE 10
 
@@ -258,6 +258,96 @@ void test_linkedlist_copy_constructor()
     TEST_ASSERT_EQUAL(list.back(), list2.back());
 };
 
+// ? Test LinkedList times of function
+void test_linkedlist_times()
+{
+    unsigned long start, end;
+
+    Serial.println("Tessing LinkedList APIs times...");
+    Serial.println("---");
+
+    start = micros();
+
+    DataStructure::LinkedList<int> list = DataStructure::LinkedList<int>(SIZE);
+
+    end = micros();
+
+    Serial.println("LinkedList Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        list.push(i);
+
+    end = micros();
+
+    Serial.println("LinkedList.push(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        list.pop(i);
+
+    end = micros();
+
+    Serial.println("LinkedList.pop(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    list.front();
+
+    end = micros();
+
+    Serial.println("LinkedList.front(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    list.back();
+
+    end = micros();
+
+    Serial.println("LinkedList.back(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    list.size();
+
+    end = micros();
+
+    Serial.println("LinkedList.size(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    list.empty();
+
+    end = micros();
+
+    Serial.println("LinkedList.empty(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    list.full();
+
+    end = micros();
+
+    Serial.println("LinkedList.full(): " + String(end - start) + " microseconds" + "\n---");
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        list.push(i);
+
+    start = micros();
+
+    DataStructure::LinkedList<int> l2 = list;
+
+    end = micros();
+
+    Serial.println("LinkedList Copy Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    Serial.println("LinkedList Memory Usage: \n---");
+
+    l2.print();
+};
+
 void setup()
 {
     UNITY_BEGIN(); // Begin unity testing
@@ -276,6 +366,8 @@ void setup()
     RUN_TEST(test_linkedlist_node_size);
 
     RUN_TEST(test_linkedlist_copy_constructor);
+
+    RUN_TEST(test_linkedlist_times);
 
     UNITY_END(); // End unity testing
 }

@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "Lists.h"
+#include "DataStructure.h"
 
-// #define VERBOSE true
+#define VERBOSE true
 
-#define SIZE 5
+#define SIZE 10
 
 // ? Test Queue push normal
 void test_queue_push()
@@ -35,22 +35,6 @@ void populate_queue(DataStructure::Queue<int> *queue)
 #endif
 }
 
-// ? Test Queue push when queue is full
-void test_queue_push_full()
-{
-    DataStructure::Queue<int> queue = DataStructure::Queue<int>(SIZE);
-
-    populate_queue(&queue);
-
-    bool result = queue.push(SIZE + 1);
-
-#if VERBOSE
-    queue.printItems();
-#endif
-
-    TEST_ASSERT_EQUAL(false, result);
-}
-
 // ? Test Queue front and back
 void test_queue_front_back()
 {
@@ -68,6 +52,22 @@ void test_queue_front_back()
 
         TEST_ASSERT_EQUAL(i, queue.back());
     }
+}
+
+// ? Test Queue push when queue is full
+void test_queue_push_full()
+{
+    DataStructure::Queue<int> queue = DataStructure::Queue<int>(SIZE);
+
+    populate_queue(&queue);
+
+    bool result = queue.push(SIZE + 1);
+
+#if VERBOSE
+    queue.printItems();
+#endif
+
+    TEST_ASSERT_EQUAL(false, result);
 }
 
 // ? Test Queue size
@@ -260,6 +260,96 @@ void test_queue_copy_constructor()
     TEST_ASSERT_EQUAL(queue.back(), queue2.back());
 };
 
+// ? Test Queue times of function
+void test_queue_times()
+{
+    unsigned long start, end;
+
+    Serial.println("Tessing Queue APIs times...");
+    Serial.println("---");
+
+    start = micros();
+
+    DataStructure::Queue<int> queue = DataStructure::Queue<int>(SIZE);
+
+    end = micros();
+
+    Serial.println("Queue Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        queue.push(i);
+
+    end = micros();
+
+    Serial.println("Queue.push(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        queue.pop(i);
+
+    end = micros();
+
+    Serial.println("Queue.pop(): " + String((end - start) / SIZE) + " microseconds" + "\n---");
+
+    start = micros();
+
+    queue.front();
+
+    end = micros();
+
+    Serial.println("Queue.front(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    queue.back();
+
+    end = micros();
+
+    Serial.println("Queue.back(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    queue.size();
+
+    end = micros();
+
+    Serial.println("Queue.size(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    queue.empty();
+
+    end = micros();
+
+    Serial.println("Queue.empty(): " + String(end - start) + " microseconds" + "\n---");
+
+    start = micros();
+
+    queue.full();
+
+    end = micros();
+
+    Serial.println("Queue.full(): " + String(end - start) + " microseconds" + "\n---");
+
+    for (uint16_t i = 1; i <= SIZE; i++)
+        queue.push(i);
+
+    start = micros();
+
+    DataStructure::Queue<int> q2 = queue;
+
+    end = micros();
+
+    Serial.println("Queue Copy Constructor: " + String(end - start) + " microseconds" + "\n---");
+
+    Serial.println("Queue Memory Usage: \n---");
+
+    q2.print();
+};
+
 void setup()
 {
     UNITY_BEGIN(); // Begin unity testing
@@ -278,6 +368,8 @@ void setup()
     RUN_TEST(test_queue_node_size);
 
     RUN_TEST(test_queue_copy_constructor);
+
+    RUN_TEST(test_queue_times);
 
     UNITY_END(); // End unity testing
 }

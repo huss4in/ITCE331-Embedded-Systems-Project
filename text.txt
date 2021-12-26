@@ -1,0 +1,15 @@
+Testing CircularQueue APIs times...
+
+CircularQueue Constructor: 4 microseconds
+CircularQueue.push(): 14 microseconds
+CircularQueue.pop(): 12 microseconds
+CircularQueue.front(): 4 microseconds
+CircularQueue.back(): 4 microseconds
+CircularQueue.size(): 4 microseconds
+CircularQueue.empty(): 0 microseconds
+CircularQueue.full(): 4 microseconds
+CircularQueue Copy Constructor: 76 microseconds
+CircularQueue Memory Usage:
+
+CircularQueue: 20 max bytes / 4 bytes per item = 5 max items | Size: 5 = 20 bytes.
+H: 1 --> 2 --> 3 --> 4 --> 5 :T

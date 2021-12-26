@@ -26,6 +26,7 @@ public:
 
         // Constructor
         Process(int arrival_time, int burst_time, int priority);
+
         // Default constructor
         Process();
 
@@ -54,7 +55,7 @@ public:
 
     class Algorithm
     {
-    private:
+    public:
         static uint8_t ROUND_ROBIN_QUANTUM;
         static bool PRIORITY_HIGH;
 

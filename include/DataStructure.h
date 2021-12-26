@@ -17,31 +17,14 @@ private:
             Node(Data data) { this->data = data; } // Constructor
         };
 
-        void listHeader()
-        {
-            Serial.print(this->itemSize());
-            Serial.print(" bytes / ");
-
-            Serial.print(this->maxMemorySize());
-            Serial.print(" max bytes = ");
-
-            Serial.print(this->maxItemsCount());
-            Serial.print(" max items ");
-
-            Serial.print("| Size ");
-            Serial.print(this->size());
-
-            Serial.println("\n---");
-        }
-
     public:
-        virtual bool empty() { return this->count == 0; }             // Return true if the list is empty.
-        virtual bool notEmpty() { return !this->empty(); }            // Return true if the list is not empty.
-        virtual bool full() { return this->count == this->maxItems; } // Return true if the list is full.
+        bool empty() const { return this->count == 0; }             // Return true if the list is empty.
+        bool notEmpty() const { return !this->empty(); }            // Return true if the list is not empty.
+        bool full() const { return this->count == this->maxItems; } // Return true if the list is full.
 
-        virtual uint16_t size() { return this->count; }              // Return the number of items in the list.
-        virtual uint16_t maxItemsCount() { return this->maxItems; }  // Return the maximum number of items the list can hold.
-        virtual uint16_t maxMemorySize() { return this->maxMemory; } // Return the maximum memory the list can allocate.
+        uint16_t size() const { return this->count; }              // Return the number of items in the list.
+        uint16_t maxItemsCount() const { return this->maxItems; }  // Return the maximum number of items the list can hold.
+        uint16_t maxMemorySize() const { return this->maxMemory; } // Return the maximum memory the list can allocate.
 
         virtual uint16_t itemSize(); // Returns the size of the list item in bytes.
 
@@ -59,6 +42,9 @@ private:
 
         virtual void printItems();  // Print list items.
         virtual void printHeader(); // Print list header.
+
+    protected:
+        void listHeader(); // Print the list header.
     };
 
     template <typename Data>
@@ -129,9 +115,23 @@ private:
 
 public:
     template <typename Data>
+    class LinkedList : public DoubleLinkedList<Data>
+    {
+    public:
+        using Node = typename DoubleLinkedList<Data>::Node;
+
+        LinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : DoubleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
+        LinkedList(const LinkedList &list) : DoubleLinkedList<Data>(list) {}                                           // Inherit copy constructor.
+
+        void printHeader(); // Print list header.
+    };
+
+    template <typename Data>
     class Queue : public SingleLinkedList<Data>
     {
     public:
+        using Node = typename SingleLinkedList<Data>::Node;
+
         Queue(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : SingleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
         Queue(const Queue &queue) : SingleLinkedList<Data>(queue) {}                                              // Inherit copy constructor.
 
@@ -144,6 +144,8 @@ public:
     class Stack : public SingleLinkedList<Data>
     {
     public:
+        using Node = typename SingleLinkedList<Data>::Node;
+
         Stack(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : SingleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
         Stack(const Stack &stack) : SingleLinkedList<Data>(stack) {}                                              // Inherit copy constructor.
 
@@ -153,21 +155,47 @@ public:
     };
 
     template <typename Data>
-    class LinkedList : public DoubleLinkedList<Data>
+    class CircularQueue : public SingleLinkedList<Data>
     {
     public:
-        LinkedList(uint16_t maxItems = -1, uint16_t maxMemory = 1024) : DoubleLinkedList<Data>(maxItems, maxMemory) {} // Inherit constructor.
-        LinkedList(const LinkedList &list) : DoubleLinkedList<Data>(list) {}                                           // Inherit copy constructor.
+        using Node = typename SingleLinkedList<Data>::Node;
 
-        // bool push(Data data);         // Push item to the list.
-        // Data pop(uint16_t index = 0); // Pop item from the list.
+        CircularQueue(uint16_t maxItems, uint16_t maxMemory = 1024) : SingleLinkedList<Data>(maxItems, maxMemory){}; // Constructor.
+        CircularQueue(const CircularQueue &queue) : SingleLinkedList<Data>(queue) {}                                 // Inherit copy constructor.
+
+        bool push(Data data);         // Push item to the queue.
+        Data pop(uint16_t index = 0); // Pop item from the queue.
 
         void printHeader(); // Print list header.
     };
 };
+
+// List header.
+template <typename Data>
+void DataStructure::List<Data>::listHeader()
+{
+    Serial.print(this->maxItemsCount() * this->itemSize());
+    Serial.print(" max bytes / ");
+
+    Serial.print(this->itemSize());
+    Serial.print(" bytes per item = ");
+
+    Serial.print(this->maxItemsCount());
+    Serial.print(" max items ");
+
+    Serial.print("| Size: ");
+    Serial.print(this->size());
+
+    Serial.print(" = ");
+    Serial.print(this->size() * this->itemSize());
+    Serial.print(" bytes.");
+
+    Serial.println("\n---");
+}
 
 #include "Lists/SingleLinkedList.h"
 #include "Lists/DoubleLinkedList.h"
 #include "Lists/LinkedList.h"
 #include "Lists/Queue.h"
 #include "Lists/Stack.h"
+#include "Lists/CircularQueue.h"

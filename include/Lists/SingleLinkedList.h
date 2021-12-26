@@ -9,7 +9,7 @@ DataStructure::SingleLinkedList<Data>::SingleLinkedList(uint16_t maxItems, uint1
     this->maxMemory = maxMemory;
     this->maxItems = maxMemory / sizeof(Node);
 
-    if (maxItems > 0 && this->maxItems > maxItems)
+    if (this->maxItems > maxItems)
         this->maxItems = maxItems;
 }
 
@@ -32,7 +32,9 @@ DataStructure::SingleLinkedList<Data> &DataStructure::SingleLinkedList<Data>::op
     this->maxMemory = list.maxMemory;
     this->maxItems = list.maxItems;
 
-    for (Node *node = list.head; node != nullptr; node = node->next)
+    Node *node = list.head;
+
+    for (uint16_t i = 0; i < list.size(); i++, node = node->next)
         this->push(node->data);
 
     return *this;
@@ -42,9 +44,12 @@ DataStructure::SingleLinkedList<Data> &DataStructure::SingleLinkedList<Data>::op
 template <typename Data>
 DataStructure::SingleLinkedList<Data>::~SingleLinkedList()
 {
+    this->tail->next = nullptr;
+
     for (Node *node = this->head; node != nullptr; node = this->head)
     {
-        this->head = node->next;
+        this->head = this->head->next;
+
         delete node;
     }
 }

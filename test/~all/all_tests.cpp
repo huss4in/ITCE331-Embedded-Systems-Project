@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "Lists.h"
+#include "DataStructure.h"
 #include "CPU.h"
 
 void populate_processes(DataStructure::Queue<CPU::Process> *processes)
