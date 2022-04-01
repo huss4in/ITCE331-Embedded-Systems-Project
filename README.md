@@ -1,3 +1,3 @@
-## UOB-331-Embedded-Systems-Project
+# UOB-331-Embedded-Systems-Project
 
-#### Run, Test, Deploy, and Monitor using [PlatformIO](https://platformio.org/)
+### Run, Test, Deploy, and Monitor using [PlatformIO](https://platformio.org/)
